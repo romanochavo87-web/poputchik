@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Попутчик — Yol yoldaşı</title>
+<style>
+:root{--bg:#eef3ee;--card:#fff;--ink:#14281d;--mute:#5b6e63;--line:#cfdbd2;--acc:#0b7a4b;--accink:#fff;--me:#d8efe2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a14;--card:#17261d;--ink:#e6f1ea;--mute:#93a99b;--line:#2a3d31;--acc:#3ecf8e;--accink:#06251a;--me:#1f4733}}
+:root[data-theme="dark"]{--bg:#0f1a14;--card:#17261d;--ink:#e6f1ea;--mute:#93a99b;--line:#2a3d31;--acc:#3ecf8e;--accink:#06251a;--me:#1f4733}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:22px 18px 40px}
+h1{margin:0;font-size:34px;letter-spacing:-.5px}
+.az{font-size:20px;font-weight:700;color:var(--acc);margin:0 0 4px}
+.sub{color:var(--mute);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+h2{margin:0 0 10px;font-size:18px}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+select,input{width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.btn{font:inherit;font-weight:600;padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;margin-top:12px}
+.btn.p{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs .btn{flex:1;margin:0}
+.tabs .on{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.trip .r{font-weight:700}.small{font-size:13px;color:var(--mute)}
+.empty{color:var(--mute);text-align:center;padding:14px}
+#msgs{min-height:90px;max-height:240px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px}
+.msg{padding:8px 10px;border-radius:9px;background:var(--bg);margin-bottom:7px;max-width:85%}
+.msg.me{background:var(--me);margin-left:auto;text-align:right}
+.stats{display:flex;gap:8px;margin-bottom:10px}.stats div{flex:1;border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center}.stats b{display:block;font-size:20px}
+.danger{color:#c0392b;border-color:#c0392b}
+#sos{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:5;padding:12px 16px;border-radius:999px;border:0;background:#c0392b;color:#fff;font:700 16px system-ui,sans-serif;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#ov{display:none;position:fixed;inset:0;z-index:10;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:18px}
+main{padding-bottom:90px}
+.lnk{display:block;text-align:center;text-decoration:none}
+.rep{font-weight:400;font-size:13px;padding:6px 10px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+<h1>Попутчик</h1>
+<p class="az">Yol yoldaşı</p>
+<p class="sub">Поездки между городами и районами Азербайджана</p>
+
+<button class="btn p" id="dl" type="button" style="display:none;width:100%;margin:0 0 6px">Скачать на телефон</button>
+<p class="small" id="dlNote" role="status" style="margin:0 0 14px"></p>
+
+<div class="tabs">
+  <button class="btn on" id="tDrv" type="button">Я водитель</button>
+  <button class="btn" id="tPas" type="button">Я пассажир</button>
+</div>
+
+<section class="card" id="form">
+  <h2 id="fTitle">Создать поездку</h2>
+  <label for="from">Откуда</label><select id="from"></select>
+  <label for="to">Куда</label><select id="to"></select>
+  <div class="row">
+    <div><label for="date">Дата</label><input id="date" type="date"></div>
+    <div><label for="time">Время</label><input id="time" type="time" value="09:00"></div>
+  </div>
+  <div id="carRow"><label for="dname">Имя водителя</label><input id="dname" type="text" placeholder="Как вас зовут" autocomplete="given-name"><label for="car">Марка авто</label><input id="car" type="text" placeholder="Например, Toyota Camry"><label for="plate">Номер авто</label><input id="plate" type="text" placeholder="10-AB-123" autocapitalize="characters"></div>
+  <div class="row">
+    <div><label for="seats">Мест</label><input id="seats" type="number" min="1" max="6" value="3"></div>
+    <div><label for="price">Цена, ₼</label><input id="price" type="number" min="0" value="10"></div>
+  </div>
+  <button class="btn p" id="go" type="button">Опубликовать поездку</button>
+</section>
+
+<div id="list"></div>
+
+<section class="card" id="chat" style="display:none">
+  <div class="row" style="align-items:center;margin-bottom:10px"><h2 id="cTitle" style="flex:1;margin:0">Личный чат</h2><button class="btn rep" id="cRep" type="button" style="flex:0 0 auto;margin:0">Пожаловаться</button></div>
+  <div id="msgs"></div>
+  <div class="row">
+    <input id="cin" type="text" placeholder="Сообщение" aria-label="Сообщение">
+    <button class="btn p" id="send" type="button" style="flex:0 0 auto;margin:0">Отправить</button>
+  </div>
+</section>
+<section class="card" id="adm" style="display:none">
+  <h2>Панель администратора</h2>
+  <div class="stats" id="admStats"></div>
+  <div id="admList"></div>
+  <button class="btn danger" id="admClear" type="button">Удалить все поездки и чаты</button>
+</section>
+<button class="btn" id="admBtn" type="button" style="width:100%">Я администратор</button>
+<p class="small" id="shNote">Код администратора: 1234 (проверка в браузере, для реального сервиса нужен вход через сервер).</p>
+<button id="sos" type="button">Пожаловаться админу</button>
+<div id="ov"><div class="card" id="dlgBody" style="width:100%;max-width:420px;margin:0"></div></div>
+</main>
+
+<script>
+var CITIES=["Баку (Bakı)","Гянджа (Gəncə)","Сумгаит (Sumqayıt)","Нахчыван (Naxçıvan)","Ленкорань (Lənkəran)","Шеки (Şəki)","Мингечевир (Mingəçevir)","Ширван (Şirvan)","Ханкенди (Xankəndi)","Нафталан (Naftalan)","Абшеронский район (Abşeron)","Хызинский район (Xızı)","Агсуинский район (Ağsu)","Исмаиллинский район (İsmayıllı)","Гобустанский район (Qobustan)","Шемахинский район (Şamaxı)","Дашкесанский район (Daşkəsən)","Геранбойский район (Goranboy)","Гёйгёльский район (Göygöl)","Самухский район (Samux)","Агджабединский район (Ağcabədi)","Агдамский район (Ağdam)","Бардинский район (Bərdə)","Физулинский район (Füzuli)","Губа (Quba)","Габала (Qəbələ)","Загатала (Zaqatala)","Билясувар (Biləsuvar)"];
+var $=function(i){return document.getElementById(i)},role='drv',me='local',db=null,chatKey=null,adminOn=false;
+var S={trips:{},chats:{},reports:{}},ADMIN_PIN='1234';
+['from','to'].forEach(function(id,k){$(id).innerHTML=CITIES.map(function(c,i){return '<option'+(i===k?' selected':'')+'>'+c+'</option>'}).join('')});
+$('date').value=new Date().toISOString().slice(0,10);
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function say(m){openDlg('<p>'+esc(m)+'</p><button class="btn p" id="okb" type="button" style="width:100%">OK</button>');$('okb').onclick=closeDlg}
+function ask(m,fn){openDlg('<p>'+esc(m)+'</p><div class="row"><button class="btn danger" id="yes" type="button">Да</button><button class="btn" id="no" type="button">Нет</button></div>');$('no').onclick=closeDlg;$('yes').onclick=function(){closeDlg();fn()}}
+window.alert=say;
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+try{var ls=JSON.parse(localStorage.getItem('poputchik2')||'null');if(ls)S=ls}catch(e){}
+function put(c,id){
+  if(db){db.collection(c).doc(id).set(JSON.parse(JSON.stringify(S[c][id]))).catch(function(){$('shNote').textContent='Не удалось сохранить в общую базу.'})}
+  else{try{localStorage.setItem('poputchik2',JSON.stringify(S))}catch(e){}}
+  refresh();
+}
+function del(c,id){delete S[c][id];if(db)db.collection(c).doc(id).delete().catch(function(){});else try{localStorage.setItem('poputchik2',JSON.stringify(S))}catch(e){};refresh()}
+function arr(c){return Object.keys(S[c]).map(function(k){var o=S[c][k];o.id=k;return o}).sort(function(a,b){return (b.ts||0)-(a.ts||0)})}
+function refresh(){render();if(chatKey)drawChat();if(adminOn)drawAdm()}
+function setRole(r){
+  role=r;chatKey=null;$('chat').style.display='none';
+  $('tDrv').classList.toggle('on',r==='drv');$('tPas').classList.toggle('on',r==='pas');
+  $('fTitle').textContent=r==='drv'?'Создать поездку':'Найти поездку';
+  $('go').textContent=r==='drv'?'Опубликовать поездку':'Найти поездки';
+  $('seats').parentNode.style.display=$('price').parentNode.style.display=r==='drv'?'':'none';
+  $('carRow').style.display=r==='drv'?'':'none';render();
+}
+function render(){
+  var f=$('from').value,t=$('to').value,list=arr('trips');
+  if(role==='pas')list=list.filter(function(x){return x.from===f&&x.to===t});
+  else list=list.filter(function(x){return x.owner===me});
+  if(!list.length){$('list').innerHTML='<div class="card empty">'+(role==='pas'?'Поездок по этому маршруту пока нет. Измените маршрут.':'У вас пока нет поездок. Опубликуйте первую.')+'</div>';return}
+  $('list').innerHTML=list.map(function(x){
+    var bks=x.bks||{},act='',own=x.owner===me,b=bks[me];
+    if(role==='pas'){
+      if(!b)act=x.seats>0?'<button class="btn p" type="button" data-book="'+x.id+'">Отправить заявку</button>':'<div class="small">Мест нет</div>';
+      else if(b.st==='pending')act='<div class="small">Заявка отправлена. Ждём ответ водителя.</div>';
+      else if(b.st==='accepted')act='<button class="btn p" type="button" data-chat="'+x.id+'_'+me+'">Открыть чат с водителем</button>';
+      else act='<div class="small">Водитель отклонил заявку.</div>';
+      if(b)act+='<button class="btn" type="button" data-unbook="'+x.id+'">Отменить заявку</button>';
+    }else{
+      var ks=Object.keys(bks);
+      act=ks.length?ks.map(function(k,i){var q=bks[k];return '<div class="small" style="margin-top:8px">Пассажир '+(i+1)+(q.name?' ('+esc(q.name)+')':'')+'</div>'+
+        (q.st==='pending'?'<div class="row"><button class="btn p" type="button" data-acc="'+x.id+'|'+k+'">Принять</button><button class="btn" type="button" data-dec="'+x.id+'|'+k+'">Отклонить</button></div>':
+        q.st==='accepted'?'<button class="btn p" type="button" data-chat="'+x.id+'_'+k+'">Открыть чат</button>':'<div class="small">Отклонена.</div>')}).join(''):'<div class="small">Заявок пока нет.</div>';
+    }
+    return '<div class="card trip"><div class="r">'+esc(x.from)+' → '+esc(x.to)+'</div><div class="small">'+esc(x.date)+', '+esc(x.time)+' · мест: '+x.seats+' · '+x.price+' ₼ · водитель '+esc(x.driver)+'</div>'+(x.car?'<div class="small">Авто: '+esc(x.car)+((own||(b&&b.st==='accepted'))&&x.plate?', номер '+esc(x.plate):'')+'</div>':'')+act+(role==='drv'&&own?'<div><button class="btn danger" type="button" data-cancel="'+x.id+'">Отменить поездку</button></div></div>':'<div><button class="btn rep" type="button" data-rep="'+x.id+'">Пожаловаться</button></div></div>')}).join('');
+}
+$('tDrv').onclick=function(){setRole('drv')};$('tPas').onclick=function(){setRole('pas')};
+$('from').onchange=$('to').onchange=function(){if(role==='pas')render()};
+$('go').onclick=function(){
+  if(role==='pas'){render();return}
+  if($('from').value===$('to').value){alert('Выберите разные города');return}
+  var dn=$('dname').value.trim(),car=$('car').value.trim(),plate=$('plate').value.trim().toUpperCase();
+  if(!dn||!car||!plate){alert('Укажите имя водителя, марку и номер авто');return}
+  var id=uid();S.trips[id]={ts:Date.now(),from:$('from').value,to:$('to').value,date:$('date').value,time:$('time').value,seats:+$('seats').value||1,price:+$('price').value||0,driver:dn,car:car,plate:plate,owner:me,bks:{}};
+  put('trips',id);
+};
+$('list').onclick=function(e){
+  var a=e.target.dataset||{};
+  if(a.cancel){var cid=a.cancel;ask('Отменить поездку? Заявки и чаты по ней будут удалены.',function(){Object.keys(S.chats).forEach(function(k){if(k.indexOf(cid+'_')===0)del('chats',k)});del('trips',cid);chatKey=null;$('chat').style.display='none'})}
+  else if(a.unbook){var tid=a.unbook;ask('Отменить заявку?',function(){var x=S.trips[tid];if(!x||!x.bks||!x.bks[me])return;if(x.bks[me].st==='accepted')x.seats++;delete x.bks[me];del('chats',tid+'_'+me);chatKey=null;$('chat').style.display='none';put('trips',tid)})}
+  else if(a.book){var x=S.trips[a.book];if(!x)return;x.bks=x.bks||{};if(x.bks[me])return;x.bks[me]={st:'pending',name:''};put('trips',a.book)}
+  else if(a.acc||a.dec){var p=(a.acc||a.dec).split('|'),x=S.trips[p[0]];if(!x||!x.bks||!x.bks[p[1]])return;
+    if(a.acc){if(x.seats<1){alert('Мест нет');return}x.bks[p[1]].st='accepted';x.seats--}else x.bks[p[1]].st='declined';put('trips',p[0])}
+  else if(a.chat){chatKey=a.chat;var tid=a.chat.split('_')[0],x=S.trips[tid];$('cTitle').textContent=(role==='pas'?'Чат с водителем: '+(x?x.driver:''):'Чат с пассажиром')+(x?' · '+x.from+' → '+x.to:'');$('chat').style.display='';drawChat();$('chat').scrollIntoView({behavior:'smooth'})}
+  else if(a.rep){var x=S.trips[a.rep];if(x)openReport('Поездка '+x.from+' → '+x.to+', водитель '+x.driver)}
+};
+function drawChat(){var m=(S.chats[chatKey]||{}).m||[];$('msgs').innerHTML=m.map(function(x){return '<div class="msg'+(x.by===me?' me':'')+'">'+esc(x.t)+'</div>'}).join('')||'<div class="small">Напишите первое сообщение.</div>';$('msgs').scrollTop=1e6}
+$('send').onclick=function(){var v=$('cin').value.trim();if(!v||!chatKey)return;var c=S.chats[chatKey]=S.chats[chatKey]||{m:[]};c.m=(c.m||[]).concat([{by:me,t:v}]);$('cin').value='';put('chats',chatKey)};
+$('cin').onkeydown=function(e){if(e.key==='Enter')$('send').click()};
+function openDlg(h){$('dlgBody').innerHTML=h;$('ov').style.display='flex'}
+function closeDlg(){$('ov').style.display='none'}
+$('ov').onclick=function(e){if(e.target===$('ov'))closeDlg()};
+function openReport(target){
+  openDlg('<h2>Пожаловаться</h2><p class="small">'+esc(target)+'</p><label for="rr">Причина</label><select id="rr"><option>Опасное вождение</option><option>Оскорбления или угрозы</option><option>Мошенничество</option><option>Не явился на поездку</option><option>Другое</option></select><label for="rt">Подробности</label><input id="rt" type="text" placeholder="Что произошло"><button class="btn p" id="rsend" type="button" style="width:100%">Отправить жалобу</button><button class="btn" id="rcl" type="button" style="width:100%">Отмена</button>');
+  $('rcl').onclick=closeDlg;
+  $('rsend').onclick=function(){var id=uid();S.reports[id]={ts:Date.now(),reason:$('rr').value,target:target,text:$('rt').value.trim(),at:new Date().toLocaleString('ru-RU'),open:true};put('reports',id);
+    openDlg('<h2>Жалоба отправлена</h2><p>Администратор рассмотрит её.</p><button class="btn p" id="ok" type="button" style="width:100%">Закрыть</button>');$('ok').onclick=closeDlg};
+}
+$('sos').onclick=function(){openReport('Общая жалоба администратору')};
+$('cRep').onclick=function(){openReport('Чат: '+$('cTitle').textContent)};
+function drawAdm(){
+  var trips=arr('trips'),reps=arr('reports'),seats=trips.reduce(function(a,x){return a+(+x.seats||0)},0),o=reps.filter(function(r){return r.open}).length;
+  $('admStats').innerHTML='<div><b>'+trips.length+'</b><span class="small">поездок</span></div><div><b>'+seats+'</b><span class="small">мест</span></div><div><b>'+Object.keys(S.chats).length+'</b><span class="small">чатов</span></div>';
+  $('admList').innerHTML=(trips.map(function(x){return '<div class="card trip"><div class="r">'+esc(x.from)+' → '+esc(x.to)+'</div><div class="small">'+esc(x.date)+', '+esc(x.time)+' · '+x.price+' ₼ · '+esc(x.driver)+(x.car?' · '+esc(x.car)+(x.plate?', '+esc(x.plate):''):'')+'</div><button class="btn danger" type="button" data-del="'+x.id+'">Удалить</button></div>'}).join('')||'<div class="empty">Поездок нет.</div>')+
+  '<h2 style="margin-top:14px">Жалобы ('+o+' открыто)</h2>'+(reps.map(function(r){return '<div class="card trip"><div class="r">'+esc(r.reason||'')+'</div><div class="small">'+esc(r.target)+(r.text?' · '+esc(r.text):'')+' · '+esc(r.at)+'</div>'+(r.open?'<button class="btn" type="button" data-rc="'+r.id+'">Закрыть обращение</button>':'<div class="small">Закрыто</div>')+'</div>'}).join('')||'<div class="empty">Обращений нет.</div>');
+}
+$('admBtn').onclick=function(){
+  if(adminOn){adminOn=false;$('adm').style.display='none';return}
+  openDlg('<h2>Код администратора</h2><input id="pin" type="password" inputmode="numeric" aria-label="Код"><button class="btn p" id="pok" type="button" style="width:100%">Войти</button>');
+  $('pok').onclick=function(){if($('pin').value!==ADMIN_PIN){$('pin').value='';$('pin').placeholder='Неверный код';return}closeDlg();adminOn=true;$('adm').style.display='';drawAdm();$('adm').scrollIntoView({behavior:'smooth'})};
+};
+$('adm').onclick=function(e){var d=e.target.dataset||{};
+  if(d.del){Object.keys(S.chats).forEach(function(k){if(k.indexOf(d.del+'_')===0)del('chats',k)});del('trips',d.del)}
+  if(d.rc&&S.reports[d.rc]){S.reports[d.rc].open=false;put('reports',d.rc)}};
+$('admClear').onclick=function(){ask('Удалить все поездки и чаты?',function(){['trips','chats'].forEach(function(c){Object.keys(S[c]).forEach(function(k){del(c,k)})});chatKey=null;$('chat').style.display='none'})};
+setRole('drv');
+claude.use('user').then(function(u){return u&&u.id?u.id():null}).then(function(i){if(i){me=i;refresh()}}).catch(function(){});
+claude.use('db').then(function(d){
+  if(!d){$('shNote').textContent='Общая база недоступна: данные хранятся только на этом устройстве.';return}
+  db=d;
+  ['trips','chats','reports'].forEach(function(c){
+    db.collection(c).onSnapshot(function(s){var o={};s.docs.forEach(function(x){o[x.id]=JSON.parse(JSON.stringify(x.data()))});S[c]=o;refresh()},function(){});
+  });
+}).catch(function(){});
+claude.use('downloads').then(function(d){
+  if(!d)return;$('dl').style.display='';
+  $('dl').onclick=function(){
+    d.save({filename:'poputchik.html',data:'<!DOCTYPE html>\n'+document.documentElement.outerHTML}).then(function(){$('dlNote').textContent='Файл сохранён. Откройте poputchik.html в браузере телефона.'}).catch(function(e){$('dlNote').textContent=e&&e.code==='declined'?'Сохранение отменено.':'Не удалось сохранить файл.'});
+  };
+}).catch(function(){});
+</script>
+</body>
+</html>
