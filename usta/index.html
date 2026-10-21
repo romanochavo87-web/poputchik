@@ -54,6 +54,10 @@ textarea{min-height:70px;resize:vertical}
 footer{margin-top:22px;text-align:center}
 footer a{color:var(--acc);font-weight:600}
 .adm-link{background:none;border:0;color:var(--mute);font:13px system-ui,sans-serif;text-decoration:underline;cursor:pointer;margin:8px 6px 0}
+.qrbox{display:flex;justify-content:center;margin:6px 0}
+.qrbox svg,.qrbox img{width:180px;height:180px;background:#fff;padding:6px;border-radius:8px}
+.printonly{display:none}
+@media print{body{background:#fff;color:#000}main{padding:0;max-width:none}main>*:not(#qrCard){display:none!important}#qrCard{display:block;border:0;text-align:center;background:#fff;color:#000}#qrCard .row,#qrCard h2,#qrCard [data-i=qrSub]{display:none}.printonly{display:block;font:700 34px system-ui,sans-serif;margin:30px 0 6px}.printonly.s{font:400 20px system-ui,sans-serif;margin:0 0 24px}.qrbox svg,.qrbox img{width:12cm;height:12cm}#qrCard .small{font-size:22px;color:#000}}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 </style>
 </head>
@@ -72,6 +76,16 @@ footer a{color:var(--acc);font-weight:600}
 <select id="dist"></select>
 <div id="banner" class="card small" role="status" style="display:none;border-color:#c0392b;margin-top:12px"></div>
 <div id="list" style="margin-top:12px"></div>
+
+<section class="card" id="qrCard">
+  <p class="printonly">🔧 Usta tap · Найти мастера</p>
+  <p class="printonly s">Kondisioner · Santexnik · Elektrik — Bakı<br>Кондиционеры · Сантехник · Электрик — Баку</p>
+  <h2 data-i="qrT"></h2>
+  <p class="small" data-i="qrSub" style="margin:0"></p>
+  <div class="qrbox" id="qrBox"></div>
+  <p class="small" style="text-align:center;margin:0 0 4px;font-weight:600">poputchik-az.netlify.app/usta</p>
+  <div class="row"><button class="btn" id="qrPrint" type="button" data-i="qrPrint"></button><button class="btn p" id="qrShare" type="button" data-i="qrShare"></button></div>
+</section>
 
 <section class="card" id="me">
   <h2 id="meT"></h2>
@@ -93,6 +107,7 @@ footer a{color:var(--acc);font-weight:600}
 <div id="ov"><div class="card" id="dlgBody" style="width:100%;max-width:420px;margin:0"></div></div>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 var L={
@@ -106,7 +121,7 @@ needName:'Adınızı yazın',needPhone:'Telefon nömrəsini düzgün yazın, mə
 reason:'Səbəb',r1:'Gəlmədi və ya cavab vermir',r2:'Pis iş / aldatma',r3:'Kobudluq',r4:'Nömrə səhvdir',r5:'Digər',details:'Ətraflı',detailsPh:'Nə baş verdi?',sendRep:'Şikayəti göndər',cancel:'Ləğv et',repSent:'Şikayət göndərildi. Administrator baxacaq.',
 ok:'OK',yes:'Bəli',no:'Xeyr',err:'Xəta baş verdi. Yenidən cəhd edin.',authErr:'Server ilə əlaqə qurulmadı. Bir az sonra səhifəni yeniləyin.',
 foot:'Usta tap — Bakıda ustaları müştərilərlə birbaşa əlaqələndirir. Sınaq versiyası.',q:'Sualınız var?',admBtn:'Administrator girişi',admT:'Admin paneli',refresh:'Yenilə',
-notAdmin:'Siz administrator deyilsiniz. Bu kodu sayt sahibinə göndərin:',hide:'Gizlət',show:'Göstər',hidden:'gizlidir',reps:'Şikayətlər',closeRep:'Bağla',noReps:'Şikayət yoxdur.',masters:'Ustalar'},
+notAdmin:'Siz administrator deyilsiniz. Bu kodu sayt sahibinə göndərin:',hide:'Gizlət',show:'Göstər',hidden:'gizlidir',reps:'Şikayətlər',closeRep:'Bağla',noReps:'Şikayət yoxdur.',masters:'Ustalar',qrT:'Dostlarınızla paylaşın',qrSub:'Telefon kamerasını QR koda tutun — sayt dərhal açılacaq.',qrPrint:'Çap et',qrShare:'Linki paylaş',copied:'Link kopyalandı'},
 ru:{h1:'Найдите мастера в Баку',lead:'Нужен мастер по кондиционерам, сантехник или электрик? Выберите услугу и район и позвоните мастеру напрямую. Без посредников и бесплатно.',
 ac:'Кондиционеры',plumb:'Сантехник',elec:'Электрик',distL:'Район',allDist:'Все районы',
 call:'Позвонить',wa:'WhatsApp',report:'Пожаловаться',none:'По этой услуге пока нет мастеров. Выберите другой район или загляните чуть позже.',loading:'Загрузка…',
@@ -117,7 +132,7 @@ needName:'Укажите имя',needPhone:'Укажите номер прави
 reason:'Причина',r1:'Не пришёл или не отвечает',r2:'Плохая работа / обман',r3:'Грубость',r4:'Неверный номер',r5:'Другое',details:'Подробности',detailsPh:'Что произошло?',sendRep:'Отправить жалобу',cancel:'Отмена',repSent:'Жалоба отправлена. Администратор рассмотрит её.',
 ok:'OK',yes:'Да',no:'Нет',err:'Произошла ошибка. Попробуйте ещё раз.',authErr:'Не удалось связаться с сервером. Обновите страницу чуть позже.',
 foot:'Usta tap — напрямую связывает мастеров Баку с клиентами. Тестовая версия.',q:'Есть вопросы?',admBtn:'Вход для администратора',admT:'Панель администратора',refresh:'Обновить',
-notAdmin:'Вы не администратор. Отправьте этот код владельцу сайта:',hide:'Скрыть',show:'Показать',hidden:'скрыт',reps:'Жалобы',closeRep:'Закрыть',noReps:'Жалоб нет.',masters:'Мастера'}};
+notAdmin:'Вы не администратор. Отправьте этот код владельцу сайта:',hide:'Скрыть',show:'Показать',hidden:'скрыт',reps:'Жалобы',closeRep:'Закрыть',noReps:'Жалоб нет.',masters:'Мастера',qrT:'Поделитесь с друзьями',qrSub:'Наведите камеру телефона на QR-код — сайт сразу откроется.',qrPrint:'Распечатать',qrShare:'Поделиться ссылкой',copied:'Ссылка скопирована'}};
 var RULES={
 az:'<h2>Qaydalar</h2><ol><li>Usta tap yalnız ustaları müştərilərlə tanış edir. Biz xidmət göstərmirik və işin keyfiyyətinə, qiymətə və ödənişə görə cavabdeh deyilik. Qiyməti usta ilə müştəri özləri razılaşdırır.</li><li>Usta yalnız həqiqətən bacardığı xidmətləri seçməli və düzgün nömrə yazmalıdır.</li><li>Aldatma, kobudluq və saxta profillər qadağandır. Şikayət olarsa, administrator profili gizlədə bilər.</li></ol><h3>Məlumatlar</h3><ul><li>Ustanın adı, telefonu, xidmətləri və rayonları hamıya görünür — müştərilər zəng etsin deyə.</li><li>Məlumatlar heç kimə satılmır. Profilinizi istənilən vaxt özünüz silə bilərsiniz və ya WhatsApp ilə yazın: +994 55 848 20 41.</li></ul>',
 ru:'<h2>Правила</h2><ol><li>Usta tap только знакомит мастеров с клиентами. Мы не оказываем услуги и не отвечаем за качество работы, цену и оплату. Цену мастер и клиент согласуют сами.</li><li>Мастер выбирает только те услуги, которые действительно умеет, и указывает правильный номер.</li><li>Обман, грубость и фальшивые профили запрещены. По жалобе администратор может скрыть профиль.</li></ol><h3>Данные</h3><ul><li>Имя, телефон, услуги и районы мастера видны всем — чтобы клиенты могли позвонить.</li><li>Данные никому не продаются. Профиль можно в любой момент удалить самому или написать в WhatsApp: +994 55 848 20 41.</li></ul>'};
@@ -211,6 +226,16 @@ $('adm').onclick=function(e){var d=e.target.dataset||{};
   if(d.rc)sb.from('master_reports').update({status:'closed'}).eq('id',d.rc).then(function(r){if(r.error)return fail(r.error);loadAdm()});
 };
 
+var SITE='https://poputchik-az.netlify.app/usta';
+(function(){var box=$('qrBox');
+  try{if(!window.qrcode)throw 0;var q=qrcode(0,'M');q.addData(SITE);q.make();box.innerHTML=q.createSvgTag(4,2);var sv=box.querySelector('svg');if(sv){sv.removeAttribute('width');sv.removeAttribute('height');sv.setAttribute('role','img');sv.setAttribute('aria-label','QR: poputchik-az.netlify.app/usta')}}
+  catch(e){box.innerHTML='<img alt="QR: poputchik-az.netlify.app/usta" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=10&data='+encodeURIComponent(SITE)+'">'}
+})();
+$('qrPrint').onclick=function(){window.print()};
+$('qrShare').onclick=function(){
+  if(navigator.share){navigator.share({title:'Usta tap',text:T('h1'),url:SITE}).catch(function(){});return}
+  (navigator.clipboard?navigator.clipboard.writeText(SITE):Promise.reject()).then(function(){say(T('copied'))}).catch(function(){say(SITE)});
+};
 setLang(lang);
 (function init(){
   if(!window.supabase){$('banner').style.display='';$('banner').textContent=T('authErr');return}
