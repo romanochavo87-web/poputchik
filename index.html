@@ -55,6 +55,10 @@ select,input{width:100%;font:inherit;padding:11px;border:1px solid var(--line);b
 footer{margin-top:22px;text-align:center}
 footer a{color:var(--acc);font-weight:600}
 .adm-link{background:none;border:0;color:var(--mute);font:13px system-ui,sans-serif;text-decoration:underline;cursor:pointer;margin-top:8px}
+.qrbox{display:flex;justify-content:center;margin:6px 0}
+.qrbox svg,.qrbox img{width:180px;height:180px;background:#fff;padding:6px;border-radius:8px}
+.printonly{display:none}
+@media print{body{background:#fff;color:#000}main{padding:0;max-width:none}main>*:not(#qrCard){display:none!important}#qrCard{display:block;border:0;text-align:center;background:#fff;color:#000}#qrCard .row,#qrCard h2,#qrCard [data-i=qrSub]{display:none}.printonly{display:block;font:700 34px system-ui,sans-serif;margin:30px 0 6px}.printonly.s{font:400 20px system-ui,sans-serif;margin:0 0 24px}.qrbox svg,.qrbox img{width:12cm;height:12cm}#qrCard .small{font-size:22px;color:#000}}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 </style>
 </head>
@@ -91,6 +95,15 @@ footer a{color:var(--acc);font-weight:600}
   <div class="fact"><b data-i="f3t"></b><span class="small" data-i="f3"></span></div>
 </div>
 
+<section class="card" id="qrCard">
+  <p class="printonly">🚗 Yol yoldaşı · Попутчик</p>
+  <p class="printonly s">Şəhərlərarası səfərdə yol yoldaşı tapın · Найдите попутчиков между городами</p>
+  <h2 data-i="qrT"></h2>
+  <p class="small" data-i="qrSub" style="margin:0"></p>
+  <div class="qrbox" id="qrBox"></div>
+  <p class="small" style="text-align:center;margin:0 0 4px;font-weight:600">poputchik-az.netlify.app</p>
+  <div class="row"><button class="btn" id="qrPrint" type="button" data-i="qrPrint"></button><button class="btn p" id="qrShare" type="button" data-i="qrShare"></button></div>
+</section>
 <div class="card small" id="banner" role="status" style="display:none;border-color:#c0392b"></div>
 <h2 data-i="who"></h2>
 <div class="tabs">
@@ -145,6 +158,7 @@ footer a{color:var(--acc);font-weight:600}
 <div id="ov"><div class="card" id="dlgBody" style="width:100%;max-width:420px;margin:0"></div></div>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 var L={
@@ -199,10 +213,10 @@ function city(c){var m=/^(.*) \(([^)]+)\)$/.exec(c||'');if(!m)return c;return la
 var EXTRA={
 az:{loading:'Yüklənir…',authErr:'Server ilə əlaqə qurulmadı. Bir az sonra səhifəni yeniləyin.',askName:'Adınızı yazın ki, sürücü kimin müraciət etdiyini bilsin',namePh:'Adınız',err:'Xəta baş verdi. Yenidən cəhd edin.',seatsLeft:'boş yer',
 notAdmin:'Siz administrator deyilsiniz. Bu kodu sayt sahibinə göndərin:',block:'Sürücünü blokla',askBlock:'Bu sürücü bloklansın? Onun gələcək səfərləri silinəcək.',blocked:'Sürücü bloklandı.',past:'keçmiş',refresh:'Yenilə',
-pendingN:'Yeni müraciət',pastTime:'Bu vaxt artıq keçib. Gələcək tarix və saat seçin.'},
+pendingN:'Yeni müraciət',qrT:'Dostlarınızla paylaşın',qrSub:'Telefon kamerasını QR koda tutun — sayt dərhal açılacaq.',qrPrint:'Çap et',qrShare:'Linki paylaş',copied:'Link kopyalandı',pastTime:'Bu vaxt artıq keçib. Gələcək tarix və saat seçin.'},
 ru:{loading:'Загрузка…',authErr:'Не удалось связаться с сервером. Обновите страницу чуть позже.',askName:'Напишите ваше имя, чтобы водитель знал, кто отправил заявку',namePh:'Ваше имя',err:'Произошла ошибка. Попробуйте ещё раз.',seatsLeft:'свободно мест',
 notAdmin:'Вы не администратор. Отправьте этот код владельцу сайта:',block:'Заблокировать водителя',askBlock:'Заблокировать этого водителя? Его будущие поездки будут удалены.',blocked:'Водитель заблокирован.',past:'прошла',refresh:'Обновить',
-pendingN:'Новая заявка',pastTime:'Это время уже прошло. Выберите будущие дату и время.'}};
+pendingN:'Новая заявка',qrT:'Поделитесь с друзьями',qrSub:'Наведите камеру телефона на QR-код — сайт сразу откроется.',qrPrint:'Распечатать',qrShare:'Поделиться ссылкой',copied:'Ссылка скопирована',pastTime:'Это время уже прошло. Выберите будущие дату и время.'}};
 Object.keys(EXTRA).forEach(function(l){Object.keys(EXTRA[l]).forEach(function(k){L[l][k]=EXTRA[l][k]})});
 
 var SB_URL='https://iuqpjveevfurufvedfnf.supabase.co',SB_KEY='sb_publishable_jR3NDpiVgqTGK43HnDO2Xw_NhGxxxap';
@@ -370,6 +384,18 @@ $('adm').onclick=function(e){var d=e.target.dataset||{};
   if(d.rc)sb.from('reports').update({status:'closed'}).eq('id',d.rc).then(function(r){if(r.error)return fail(r.error);loadAdm()});
 };
 $('admClear').style.display='none';
+
+var SITE='https://poputchik-az.netlify.app';
+(function(){var box=$('qrBox');
+  try{if(!window.qrcode)throw 0;var q=qrcode(0,'M');q.addData(SITE);q.make();box.innerHTML=q.createSvgTag(4,2);var sv=box.querySelector('svg');if(sv){sv.removeAttribute('width');sv.removeAttribute('height');sv.setAttribute('role','img');sv.setAttribute('aria-label','QR: poputchik-az.netlify.app')}}
+  catch(e){box.innerHTML='<img alt="QR: poputchik-az.netlify.app" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=10&data='+encodeURIComponent(SITE)+'">'}
+})();
+$('qrPrint').onclick=function(){window.print()};
+$('qrShare').onclick=function(){
+  var data={title:'Yol yoldaşı · Попутчик',text:T('h1'),url:SITE};
+  if(navigator.share){navigator.share(data).catch(function(){});return}
+  (navigator.clipboard?navigator.clipboard.writeText(SITE):Promise.reject()).then(function(){say(T('copied'))}).catch(function(){say(SITE)});
+};
 
 setLang(lang);
 $('dname').value=savedName();
