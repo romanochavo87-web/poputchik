@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Usta tap · Найти мастера — Bakı</title>
+<meta name="description" content="Bakıda kondisioner ustası, santexnik və elektrik tapın — birbaşa zəng edin. Найдите мастера по кондиционерам, сантехника или электрика в Баку и позвоните напрямую.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Usta tap — Bakıda kondisioner, santexnik, elektrik">
+<meta property="og:description" content="Rayonunuzda ustanı seçin və birbaşa zəng edin. Vasitəçi yoxdur, pulsuzdur.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A7%3C/text%3E%3C/svg%3E">
+<style>
+:root{--bg:#f2f1ec;--card:#fff;--ink:#1d2330;--mute:#5e6675;--line:#d9d7cf;--acc:#1f5fbf;--accink:#fff;--soft:#e6edf8;--ok:#1a8a4a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121620;--card:#1b2130;--ink:#e8ecf3;--mute:#98a2b3;--line:#2c3446;--acc:#6ea8ff;--accink:#0b1730;--soft:#1f2b44;--ok:#3ecf8e}}
+:root[data-theme="dark"]{--bg:#121620;--card:#1b2130;--ink:#e8ecf3;--mute:#98a2b3;--line:#2c3446;--acc:#6ea8ff;--accink:#0b1730;--soft:#1f2b44;--ok:#3ecf8e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px)}
+main{max-width:560px;margin:0 auto;padding:16px 16px 40px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.logo{font-weight:800;font-size:18px;color:var(--acc)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{font:600 14px system-ui,sans-serif;padding:7px 14px;border:0;background:var(--card);color:var(--ink);cursor:pointer}
+.lang button.on{background:var(--acc);color:var(--accink)}
+h1{margin:0 0 6px;font-size:30px;line-height:1.15;letter-spacing:-.5px}
+.lead{margin:0 0 16px;color:var(--mute)}
+h2{margin:0 0 10px;font-size:19px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.svc button{font:600 14px system-ui,sans-serif;padding:14px 6px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.svc button span{font-size:26px}
+.svc button.on{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+select,input,textarea{width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+textarea{min-height:70px;resize:vertical}
+.btn{font:inherit;font-weight:600;padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;margin-top:12px;text-decoration:none;display:inline-block;text-align:center}
+.btn.p{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.btn.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
+.m .nm{font-weight:700;font-size:17px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.chip{background:var(--soft);border-radius:999px;padding:3px 10px;font-size:13px}
+.small{font-size:13px;color:var(--mute)}
+.empty{color:var(--mute);text-align:center;padding:14px}
+.checks{display:flex;flex-wrap:wrap;gap:6px}
+.checks label{display:flex;align-items:center;gap:6px;margin:0;padding:8px 10px;border:1px solid var(--line);border-radius:10px;color:var(--ink);font-size:14px;cursor:pointer;background:var(--bg)}
+.checks input{width:auto;margin:0}
+.agree{display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:14px;color:var(--ink)}
+.agree input{width:auto;margin-top:3px}
+.linkbtn{background:none;border:0;padding:0;color:var(--acc);font:inherit;text-decoration:underline;cursor:pointer}
+.rep{font-weight:400;font-size:13px;padding:6px 10px}
+.danger{color:#c0392b;border-color:#c0392b}
+#ov{display:none;position:fixed;inset:0;z-index:10;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:18px}
+.rules{max-height:70vh;overflow:auto}.rules li{margin-bottom:6px}
+footer{margin-top:22px;text-align:center}
+footer a{color:var(--acc);font-weight:600}
+.adm-link{background:none;border:0;color:var(--mute);font:13px system-ui,sans-serif;text-decoration:underline;cursor:pointer;margin:8px 6px 0}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+<div class="top">
+  <span class="logo">🔧 Usta tap</span>
+  <div class="lang" role="group" aria-label="Dil / Язык"><button type="button" id="lAz">AZ</button><button type="button" id="lRu">RU</button></div>
+</div>
+
+<h1 data-i="h1"></h1>
+<p class="lead" data-i="lead"></p>
+
+<div class="svc" id="svc"></div>
+<label for="dist" data-i="distL"></label>
+<select id="dist"></select>
+<div id="banner" class="card small" role="status" style="display:none;border-color:#c0392b;margin-top:12px"></div>
+<div id="list" style="margin-top:12px"></div>
+
+<section class="card" id="me">
+  <h2 id="meT"></h2>
+  <p class="small" id="meSub" style="margin:0"></p>
+  <div id="meBody"></div>
+</section>
+
+<section class="card" id="adm" style="display:none">
+  <h2 data-i="admT"></h2>
+  <button class="btn" id="admReload" type="button" data-i="refresh" style="width:100%;margin-top:0"></button>
+  <div id="admList"></div>
+</section>
+
+<footer>
+  <p class="small" data-i="foot"></p>
+  <p class="small"><span data-i="q"></span> <a href="https://wa.me/994558482041" target="_blank" rel="noopener">WhatsApp: +994 55 848 20 41</a></p>
+  <button class="adm-link" type="button" data-rules="1" data-i="rulesL"></button><button class="adm-link" id="admBtn" type="button" data-i="admBtn"></button>
+</footer>
+<div id="ov"><div class="card" id="dlgBody" style="width:100%;max-width:420px;margin:0"></div></div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+var L={
+az:{h1:'Bakıda usta tapın',lead:'Kondisioner ustası, santexnik və ya elektrik lazımdır? Xidməti və rayonu seçin, ustaya birbaşa zəng edin. Vasitəçi yoxdur, pulsuzdur.',
+ac:'Kondisioner',plumb:'Santexnik',elec:'Elektrik',distL:'Rayon',allDist:'Bütün rayonlar',
+call:'Zəng et',wa:'WhatsApp',report:'Şikayət et',none:'Bu xidmət üzrə hələ usta yoxdur. Başqa rayon seçin və ya bir az sonra yoxlayın.',loading:'Yüklənir…',
+regT:'Siz ustasınız?',regSub:'Pulsuz qeydiyyatdan keçin — müştərilər sizə birbaşa zəng edəcək.',name:'Adınız',phone:'Telefon nömrəsi',phonePh:'+994 50 123 45 67',svcL:'Nə edirsiniz?',distsL:'Hansı rayonlarda işləyirsiniz?',about:'Özünüz haqqında (istəyə görə)',aboutPh:'Məsələn: 10 il təcrübə, təmir və quraşdırma',
+agree:'Qaydalarla və nömrəmin saytda göstərilməsi ilə razıyam.',rulesL:'Qaydalar',save:'Qeydiyyatdan keç',update:'Yadda saxla',
+myT:'Sizin profiliniz',mySub:'Müştərilər sizi siyahıda görür. Məlumatları dəyişə bilərsiniz.',hiddenNote:'Profiliniz administrator tərəfindən gizlədilib.',del:'Profili sil',askDel:'Profil silinsin?',
+needName:'Adınızı yazın',needPhone:'Telefon nömrəsini düzgün yazın, məsələn +994 50 123 45 67',needSvc:'Ən azı bir xidmət seçin',needDist:'Ən azı bir rayon seçin',needAgree:'Qaydalarla razılaşın',saved:'Yadda saxlanıldı! Profiliniz siyahıdadır.',
+reason:'Səbəb',r1:'Gəlmədi və ya cavab vermir',r2:'Pis iş / aldatma',r3:'Kobudluq',r4:'Nömrə səhvdir',r5:'Digər',details:'Ətraflı',detailsPh:'Nə baş verdi?',sendRep:'Şikayəti göndər',cancel:'Ləğv et',repSent:'Şikayət göndərildi. Administrator baxacaq.',
+ok:'OK',yes:'Bəli',no:'Xeyr',err:'Xəta baş verdi. Yenidən cəhd edin.',authErr:'Server ilə əlaqə qurulmadı. Bir az sonra səhifəni yeniləyin.',
+foot:'Usta tap — Bakıda ustaları müştərilərlə birbaşa əlaqələndirir. Sınaq versiyası.',q:'Sualınız var?',admBtn:'Administrator girişi',admT:'Admin paneli',refresh:'Yenilə',
+notAdmin:'Siz administrator deyilsiniz. Bu kodu sayt sahibinə göndərin:',hide:'Gizlət',show:'Göstər',hidden:'gizlidir',reps:'Şikayətlər',closeRep:'Bağla',noReps:'Şikayət yoxdur.',masters:'Ustalar'},
+ru:{h1:'Найдите мастера в Баку',lead:'Нужен мастер по кондиционерам, сантехник или электрик? Выберите услугу и район и позвоните мастеру напрямую. Без посредников и бесплатно.',
+ac:'Кондиционеры',plumb:'Сантехник',elec:'Электрик',distL:'Район',allDist:'Все районы',
+call:'Позвонить',wa:'WhatsApp',report:'Пожаловаться',none:'По этой услуге пока нет мастеров. Выберите другой район или загляните чуть позже.',loading:'Загрузка…',
+regT:'Вы мастер?',regSub:'Зарегистрируйтесь бесплатно — клиенты будут звонить вам напрямую.',name:'Ваше имя',phone:'Номер телефона',phonePh:'+994 50 123 45 67',svcL:'Чем занимаетесь?',distsL:'В каких районах работаете?',about:'О себе (по желанию)',aboutPh:'Например: опыт 10 лет, ремонт и установка',
+agree:'Согласен с правилами и с тем, что мой номер будет виден на сайте.',rulesL:'Правила',save:'Зарегистрироваться',update:'Сохранить',
+myT:'Ваш профиль',mySub:'Клиенты видят вас в списке. Данные можно изменить.',hiddenNote:'Ваш профиль скрыт администратором.',del:'Удалить профиль',askDel:'Удалить профиль?',
+needName:'Укажите имя',needPhone:'Укажите номер правильно, например +994 50 123 45 67',needSvc:'Выберите хотя бы одну услугу',needDist:'Выберите хотя бы один район',needAgree:'Согласитесь с правилами',saved:'Сохранено! Ваш профиль в списке.',
+reason:'Причина',r1:'Не пришёл или не отвечает',r2:'Плохая работа / обман',r3:'Грубость',r4:'Неверный номер',r5:'Другое',details:'Подробности',detailsPh:'Что произошло?',sendRep:'Отправить жалобу',cancel:'Отмена',repSent:'Жалоба отправлена. Администратор рассмотрит её.',
+ok:'OK',yes:'Да',no:'Нет',err:'Произошла ошибка. Попробуйте ещё раз.',authErr:'Не удалось связаться с сервером. Обновите страницу чуть позже.',
+foot:'Usta tap — напрямую связывает мастеров Баку с клиентами. Тестовая версия.',q:'Есть вопросы?',admBtn:'Вход для администратора',admT:'Панель администратора',refresh:'Обновить',
+notAdmin:'Вы не администратор. Отправьте этот код владельцу сайта:',hide:'Скрыть',show:'Показать',hidden:'скрыт',reps:'Жалобы',closeRep:'Закрыть',noReps:'Жалоб нет.',masters:'Мастера'}};
+var RULES={
+az:'<h2>Qaydalar</h2><ol><li>Usta tap yalnız ustaları müştərilərlə tanış edir. Biz xidmət göstərmirik və işin keyfiyyətinə, qiymətə və ödənişə görə cavabdeh deyilik. Qiyməti usta ilə müştəri özləri razılaşdırır.</li><li>Usta yalnız həqiqətən bacardığı xidmətləri seçməli və düzgün nömrə yazmalıdır.</li><li>Aldatma, kobudluq və saxta profillər qadağandır. Şikayət olarsa, administrator profili gizlədə bilər.</li></ol><h3>Məlumatlar</h3><ul><li>Ustanın adı, telefonu, xidmətləri və rayonları hamıya görünür — müştərilər zəng etsin deyə.</li><li>Məlumatlar heç kimə satılmır. Profilinizi istənilən vaxt özünüz silə bilərsiniz və ya WhatsApp ilə yazın: +994 55 848 20 41.</li></ul>',
+ru:'<h2>Правила</h2><ol><li>Usta tap только знакомит мастеров с клиентами. Мы не оказываем услуги и не отвечаем за качество работы, цену и оплату. Цену мастер и клиент согласуют сами.</li><li>Мастер выбирает только те услуги, которые действительно умеет, и указывает правильный номер.</li><li>Обман, грубость и фальшивые профили запрещены. По жалобе администратор может скрыть профиль.</li></ol><h3>Данные</h3><ul><li>Имя, телефон, услуги и районы мастера видны всем — чтобы клиенты могли позвонить.</li><li>Данные никому не продаются. Профиль можно в любой момент удалить самому или написать в WhatsApp: +994 55 848 20 41.</li></ul>'};
+var SVC=[['ac','❄️'],['plumb','🚰'],['elec','💡']];
+var DIST=[['Binəqədi','Бинагади'],['Qaradağ','Гарадаг'],['Xətai','Хатаи'],['Xəzər','Хазар'],['Nərimanov','Нариманов'],['Nəsimi','Насими'],['Nizami','Низами'],['Pirallahı','Пираллахы'],['Sabunçu','Сабунчу'],['Səbail','Сабаил'],['Suraxanı','Сураханы'],['Yasamal','Ясамал'],['Abşeron (Xırdalan)','Абшерон (Хырдалан)'],['Sumqayıt','Сумгаит']];
+var lang='az';try{var sl=localStorage.getItem('poputchikLang');if(sl==='ru'||sl==='az')lang=sl}catch(e){}
+function T(k){return L[lang][k]||k}
+function dn(d){var x=DIST.find(function(p){return p[0]===d});return x?(lang==='az'?x[0]:x[1]):d}
+var $=function(i){return document.getElementById(i)},sb=null,me=null,isAdmin=false,svc='ac',masters=[],mine=null;
+function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function openDlg(h){$('dlgBody').innerHTML=h;$('ov').style.display='flex'}
+function closeDlg(){$('ov').style.display='none'}
+$('ov').onclick=function(e){if(e.target===$('ov'))closeDlg()};
+function say(m){openDlg('<p>'+esc(m)+'</p><button class="btn p" id="okb" type="button" style="width:100%">'+T('ok')+'</button>');$('okb').onclick=closeDlg}
+function ask(m,fn){openDlg('<p>'+esc(m)+'</p><div class="row"><button class="btn danger" id="yes" type="button">'+T('yes')+'</button><button class="btn" id="no" type="button">'+T('no')+'</button></div>');$('no').onclick=closeDlg;$('yes').onclick=function(){closeDlg();fn()}}
+function fail(e){console.error(e);say(T('err'))}
+function ready(){if(!sb||!me){say(T('authErr'));return false}return true}
+document.addEventListener('click',function(e){if(e.target.dataset&&e.target.dataset.rules){e.preventDefault();openDlg('<div class="rules">'+RULES[lang]+'</div><button class="btn p" id="rok" type="button" style="width:100%">'+T('ok')+'</button>');$('rok').onclick=closeDlg}});
+function normPhone(v){var d=String(v).replace(/\D/g,'');if(d.indexOf('994')===0)d=d.slice(3);if(d.charAt(0)==='0')d=d.slice(1);return d.length===9?'+994'+d:null}
+function prettyPhone(p){var d=p.slice(4);return '+994 '+d.slice(0,2)+' '+d.slice(2,5)+' '+d.slice(5,7)+' '+d.slice(7)}
+
+function setLang(l){
+  lang=l;try{localStorage.setItem('poputchikLang',l)}catch(e){}
+  document.documentElement.lang=l;$('lAz').classList.toggle('on',l==='az');$('lRu').classList.toggle('on',l==='ru');
+  document.querySelectorAll('[data-i]').forEach(function(n){n.textContent=T(n.getAttribute('data-i'))});
+  $('svc').innerHTML=SVC.map(function(s){return '<button type="button" data-svc="'+s[0]+'"'+(s[0]===svc?' class="on"':'')+'><span aria-hidden="true">'+s[1]+'</span>'+T(s[0])+'</button>'}).join('');
+  var cur=$('dist').value;$('dist').innerHTML='<option value="">'+T('allDist')+'</option>'+DIST.map(function(d){return '<option value="'+esc(d[0])+'"'+(d[0]===cur?' selected':'')+'>'+esc(dn(d[0]))+'</option>'}).join('');
+  render();drawMe();
+}
+$('lAz').onclick=function(){setLang('az')};$('lRu').onclick=function(){setLang('ru')};
+$('svc').onclick=function(e){var b=e.target.closest('[data-svc]');if(!b)return;svc=b.dataset.svc;document.querySelectorAll('#svc button').forEach(function(x){x.classList.toggle('on',x===b)});render()};
+$('dist').onchange=render;
+
+function render(){
+  if(!sb){$('list').innerHTML='<div class="card empty">'+T('loading')+'</div>';return}
+  var d=$('dist').value,list=masters.filter(function(m){return !m.is_hidden&&m.services.indexOf(svc)>-1&&(!d||m.districts.indexOf(d)>-1)});
+  if(!list.length){$('list').innerHTML='<div class="card empty">'+T('none')+'</div>';return}
+  $('list').innerHTML=list.map(function(m){var wa=m.phone.slice(1);
+    return '<div class="card m"><div class="nm">'+esc(m.name)+'</div><div class="chips">'+m.services.map(function(s){return '<span class="chip">'+T(s)+'</span>'}).join('')+'</div><div class="small">📍 '+m.districts.map(dn).map(esc).join(', ')+'</div>'+(m.about?'<p style="margin:8px 0 0">'+esc(m.about)+'</p>':'')+
+    '<div class="row"><a class="btn ok" href="tel:'+esc(m.phone)+'">📞 '+T('call')+'</a><a class="btn" href="https://wa.me/'+esc(wa)+'" target="_blank" rel="noopener">'+T('wa')+'</a></div><div class="small" style="margin-top:6px">'+prettyPhone(m.phone)+' · <button class="linkbtn" type="button" data-rep="'+m.id+'">'+T('report')+'</button></div></div>'}).join('');
+}
+$('list').onclick=function(e){var id=e.target.dataset&&e.target.dataset.rep;if(!id||!ready())return;
+  openDlg('<h2>'+T('report')+'</h2><label for="rr">'+T('reason')+'</label><select id="rr">'+['r1','r2','r3','r4','r5'].map(function(k){return '<option>'+T(k)+'</option>'}).join('')+'</select><label for="rt">'+T('details')+'</label><input id="rt" type="text" placeholder="'+T('detailsPh')+'"><button class="btn p" id="rs" type="button" style="width:100%">'+T('sendRep')+'</button><button class="btn" id="rc" type="button" style="width:100%">'+T('cancel')+'</button>');
+  $('rc').onclick=closeDlg;$('rs').onclick=function(){sb.from('master_reports').insert({reporter_id:me,master_id:id,reason:$('rr').value,details:$('rt').value.trim().slice(0,500)||null}).then(function(r){if(r.error)return fail(r.error);say(T('repSent'))})}};
+
+function drawMe(){
+  var m=mine||{name:'',phone:'',services:[],districts:[],about:''};
+  $('meT').textContent=T(mine?'myT':'regT');$('meSub').textContent=mine&&mine.is_hidden?T('hiddenNote'):T(mine?'mySub':'regSub');
+  $('meBody').innerHTML='<label for="fn">'+T('name')+'</label><input id="fn" type="text" maxlength="40" autocomplete="given-name" value="'+esc(m.name)+'">'+
+  '<label for="fp">'+T('phone')+'</label><input id="fp" type="tel" inputmode="tel" autocomplete="tel" placeholder="'+T('phonePh')+'" value="'+esc(m.phone?prettyPhone(m.phone):'')+'">'+
+  '<label>'+T('svcL')+'</label><div class="checks">'+SVC.map(function(s){return '<label><input type="checkbox" name="fs" value="'+s[0]+'"'+(m.services.indexOf(s[0])>-1?' checked':'')+'>'+s[1]+' '+T(s[0])+'</label>'}).join('')+'</div>'+
+  '<label>'+T('distsL')+'</label><div class="checks">'+DIST.map(function(d){return '<label><input type="checkbox" name="fd" value="'+esc(d[0])+'"'+(m.districts.indexOf(d[0])>-1?' checked':'')+'>'+esc(dn(d[0]))+'</label>'}).join('')+'</div>'+
+  '<label for="fa">'+T('about')+'</label><textarea id="fa" maxlength="300" placeholder="'+T('aboutPh')+'">'+esc(m.about||'')+'</textarea>'+
+  (mine?'':'<label class="agree"><input type="checkbox" id="fag"><span>'+T('agree')+' <button class="linkbtn" type="button" data-rules="1">'+T('rulesL')+'</button></span></label>')+
+  '<button class="btn p" id="fsave" type="button" style="width:100%">'+T(mine?'update':'save')+'</button>'+(mine?'<button class="btn danger" id="fdel" type="button" style="width:100%">'+T('del')+'</button>':'');
+  $('fsave').onclick=saveMe;if(mine)$('fdel').onclick=function(){ask(T('askDel'),function(){sb.from('masters').delete().eq('id',mine.id).then(function(r){if(r.error)return fail(r.error);mine=null;load()})})};
+}
+function vals(n){return Array.prototype.slice.call(document.querySelectorAll('input[name='+n+']:checked')).map(function(x){return x.value})}
+function saveMe(){
+  if(!ready())return;
+  var name=$('fn').value.trim(),phone=normPhone($('fp').value),s=vals('fs'),d=vals('fd'),about=$('fa').value.trim().slice(0,300)||null;
+  if(name.length<2)return say(T('needName'));if(!phone)return say(T('needPhone'));if(!s.length)return say(T('needSvc'));if(!d.length)return say(T('needDist'));
+  if(!mine&&!$('fag').checked)return say(T('needAgree'));
+  var row={name:name.slice(0,40),phone:phone,services:s,districts:d,about:about};
+  $('fsave').disabled=true;
+  var q=mine?sb.from('masters').update(row).eq('id',mine.id):sb.from('masters').insert(Object.assign({user_id:me},row));
+  q.then(function(r){$('fsave').disabled=false;if(r.error)return fail(r.error);say(T('saved'));load()});
+}
+
+function load(){
+  if(!sb)return;
+  return sb.from('masters').select('*').order('created_at',{ascending:false}).then(function(r){
+    if(r.error)return console.error(r.error);masters=r.data||[];mine=me?masters.find(function(m){return m.user_id===me})||null:null;render();drawMe();if($('adm').style.display!=='none')drawAdm();
+  });
+}
+var reps=[];
+function drawAdm(){
+  $('admList').innerHTML='<h2 style="margin-top:14px">'+T('masters')+' ('+masters.length+')</h2>'+masters.map(function(m){return '<div class="card"><b>'+esc(m.name)+'</b> '+(m.is_hidden?'<span class="small">('+T('hidden')+')</span>':'')+'<div class="small">'+prettyPhone(m.phone)+' · '+m.services.map(T).join(', ')+' · '+m.districts.map(dn).join(', ')+'</div><button class="btn'+(m.is_hidden?'':' danger')+'" type="button" data-hide="'+m.id+'" data-v="'+(m.is_hidden?0:1)+'">'+T(m.is_hidden?'show':'hide')+'</button></div>'}).join('')+
+  '<h2 style="margin-top:14px">'+T('reps')+'</h2>'+(reps.map(function(r){var m=masters.find(function(x){return x.id===r.master_id});return '<div class="card"><b>'+esc(r.reason)+'</b><div class="small">'+(m?esc(m.name)+' · ':'')+esc(r.details||'')+' · '+new Date(r.created_at).toLocaleString()+'</div>'+(r.status==='open'?'<button class="btn" type="button" data-rc="'+r.id+'">'+T('closeRep')+'</button>':'')+'</div>'}).join('')||'<div class="empty">'+T('noReps')+'</div>');
+}
+function loadAdm(){Promise.all([load(),sb.from('master_reports').select('*').order('created_at',{ascending:false}).limit(200)]).then(function(r){reps=(r[1]&&r[1].data)||[];drawAdm()})}
+$('admBtn').onclick=function(){
+  if(!ready())return;
+  if($('adm').style.display!=='none'){$('adm').style.display='none';return}
+  if(!isAdmin){openDlg('<p>'+T('notAdmin')+'</p><input type="text" readonly value="'+esc(me)+'" style="font-size:13px" onclick="this.select()"><button class="btn p" id="okb" type="button" style="width:100%">'+T('ok')+'</button>');$('okb').onclick=closeDlg;return}
+  $('adm').style.display='';loadAdm();$('adm').scrollIntoView({behavior:'smooth'});
+};
+$('admReload').onclick=loadAdm;
+$('adm').onclick=function(e){var d=e.target.dataset||{};
+  if(d.hide)sb.from('masters').update({is_hidden:d.v==='1'}).eq('id',d.hide).then(function(r){if(r.error)return fail(r.error);loadAdm()});
+  if(d.rc)sb.from('master_reports').update({status:'closed'}).eq('id',d.rc).then(function(r){if(r.error)return fail(r.error);loadAdm()});
+};
+
+setLang(lang);
+(function init(){
+  if(!window.supabase){$('banner').style.display='';$('banner').textContent=T('authErr');return}
+  sb=window.supabase.createClient('https://iuqpjveevfurufvedfnf.supabase.co','sb_publishable_jR3NDpiVgqTGK43HnDO2Xw_NhGxxxap',{auth:{persistSession:true,autoRefreshToken:true}});
+  render();load();
+  sb.auth.getSession().then(function(r){var s=r.data&&r.data.session;return s?s:sb.auth.signInAnonymously().then(function(x){if(x.error)throw x.error;return x.data.session})})
+  .then(function(s){me=s.user.id;sb.from('profiles').select('role').eq('id',me).maybeSingle().then(function(r){isAdmin=!!(r.data&&r.data.role==='admin')});load()})
+  .catch(function(e){console.error(e);$('banner').style.display='';$('banner').textContent=T('authErr')});
+})();
+</script>
+</body>
+</html>
