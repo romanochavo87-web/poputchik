@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="az">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Попутчик — Yol yoldaşı</title>
+<title>Yol yoldaşı · Попутчик — şəhərlərarası birgə səfərlər</title>
+<meta name="description" content="Başqa şəhərə maşınla gedirsiniz? Boş yerləri yol yoldaşlarına təklif edin və benzin xərcini bölüşün. Едете в другой город? Найдите попутчиков и разделите расходы на бензин.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Yol yoldaşı — Azərbaycanda şəhərlərarası birgə səfərlər">
+<meta property="og:description" content="Sürücülər boş yerləri təklif edir, sərnişinlər yol yoldaşı tapır. Benzin xərcini bölüşün — avtobusdan rahat, taksidən ucuz.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9A%97%3C/text%3E%3C/svg%3E">
 <style>
-:root{--bg:#eef3ee;--card:#fff;--ink:#14281d;--mute:#5b6e63;--line:#cfdbd2;--acc:#0b7a4b;--accink:#fff;--me:#d8efe2;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a14;--card:#17261d;--ink:#e6f1ea;--mute:#93a99b;--line:#2a3d31;--acc:#3ecf8e;--accink:#06251a;--me:#1f4733}}
-:root[data-theme="dark"]{--bg:#0f1a14;--card:#17261d;--ink:#e6f1ea;--mute:#93a99b;--line:#2a3d31;--acc:#3ecf8e;--accink:#06251a;--me:#1f4733}
+:root{--bg:#eef3ee;--card:#fff;--ink:#14281d;--mute:#5b6e63;--line:#cfdbd2;--acc:#0b7a4b;--accink:#fff;--me:#d8efe2;--soft:#e2f1e8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a14;--card:#17261d;--ink:#e6f1ea;--mute:#93a99b;--line:#2a3d31;--acc:#3ecf8e;--accink:#06251a;--me:#1f4733;--soft:#1a3326}}
+:root[data-theme="dark"]{--bg:#0f1a14;--card:#17261d;--ink:#e6f1ea;--mute:#93a99b;--line:#2a3d31;--acc:#3ecf8e;--accink:#06251a;--me:#1f4733;--soft:#1a3326}
 *{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-main{max-width:560px;margin:0 auto;padding:22px 18px 40px}
-h1{margin:0;font-size:34px;letter-spacing:-.5px}
-.az{font-size:20px;font-weight:700;color:var(--acc);margin:0 0 4px}
-.sub{color:var(--mute);margin:0 0 20px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px)}
+main{max-width:560px;margin:0 auto;padding:16px 16px 96px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.logo{font-weight:800;font-size:18px;color:var(--acc)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{font:600 14px system-ui,sans-serif;padding:7px 14px;border:0;background:var(--card);color:var(--ink);cursor:pointer}
+.lang button.on{background:var(--acc);color:var(--accink)}
+h1{margin:0 0 4px;font-size:32px;line-height:1.15;letter-spacing:-.5px}
+.alt{font-size:16px;font-weight:600;color:var(--mute);margin:0 0 12px}
+.lead{font-size:17px;margin:0 0 10px}
+.ex{display:inline-block;background:var(--soft);border-radius:8px;padding:6px 10px;font-weight:600;margin:0 0 14px}
+.cta{display:flex;gap:8px;margin-bottom:22px}.cta .btn{flex:1;margin:0;padding:14px 10px}
+h2{margin:0 0 10px;font-size:19px}
+.steps{list-style:none;margin:0;padding:0}
+.steps li{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.steps li:last-child{margin-bottom:0}
+.num{flex:0 0 30px;height:30px;border-radius:50%;background:var(--acc);color:var(--accink);font-weight:700;display:flex;align-items:center;justify-content:center}
+.facts{display:grid;gap:8px;margin-bottom:22px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.fact b{display:block;margin-bottom:2px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
-h2{margin:0 0 10px;font-size:18px}
 label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
 select,input{width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
-.row{display:flex;gap:8px}.row>*{flex:1}
+.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
 .btn{font:inherit;font-weight:600;padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;margin-top:12px}
 .btn.p{background:var(--acc);color:var(--accink);border-color:var(--acc)}
 .tabs{display:flex;gap:8px;margin-bottom:12px}.tabs .btn{flex:1;margin:0}
@@ -32,179 +49,258 @@ select,input{width:100%;font:inherit;padding:11px;border:1px solid var(--line);b
 .msg.me{background:var(--me);margin-left:auto;text-align:right}
 .stats{display:flex;gap:8px;margin-bottom:10px}.stats div{flex:1;border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center}.stats b{display:block;font-size:20px}
 .danger{color:#c0392b;border-color:#c0392b}
-#sos{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:5;padding:12px 16px;border-radius:999px;border:0;background:#c0392b;color:#fff;font:700 16px system-ui,sans-serif;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#sos{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:5;padding:12px 16px;border-radius:999px;border:0;background:#c0392b;color:#fff;font:700 15px system-ui,sans-serif;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
 #ov{display:none;position:fixed;inset:0;z-index:10;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:18px}
-main{padding-bottom:90px}
-.lnk{display:block;text-align:center;text-decoration:none}
 .rep{font-weight:400;font-size:13px;padding:6px 10px}
+footer{margin-top:22px;text-align:center}
+footer a{color:var(--acc);font-weight:600}
+.adm-link{background:none;border:0;color:var(--mute);font:13px system-ui,sans-serif;text-decoration:underline;cursor:pointer;margin-top:8px}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 </style>
 </head>
 <body>
 <main>
-<h1>Попутчик</h1>
-<p class="az">Yol yoldaşı</p>
-<p class="sub">Поездки между городами и районами Азербайджана</p>
+<div class="top">
+  <span class="logo">🚗 Yol yoldaşı</span>
+  <div class="lang" role="group" aria-label="Dil / Язык">
+    <button type="button" id="lAz">AZ</button><button type="button" id="lRu">RU</button>
+  </div>
+</div>
 
-<button class="btn p" id="dl" type="button" style="display:none;width:100%;margin:0 0 6px">Скачать на телефон</button>
-<p class="small" id="dlNote" role="status" style="margin:0 0 14px"></p>
+<h1 data-i="h1"></h1>
+<p class="alt" data-i="alt"></p>
+<p class="lead" data-i="lead"></p>
+<p class="ex" data-i="ex"></p>
+<div class="cta">
+  <button class="btn p" id="cDrv" type="button" data-i="ctaDrv"></button>
+  <button class="btn" id="cPas" type="button" data-i="ctaPas"></button>
+</div>
 
+<section class="card">
+  <h2 data-i="howT"></h2>
+  <ol class="steps">
+    <li><span class="num">1</span><span data-i="s1"></span></li>
+    <li><span class="num">2</span><span data-i="s2"></span></li>
+    <li><span class="num">3</span><span data-i="s3"></span></li>
+  </ol>
+</section>
+
+<div class="facts">
+  <div class="fact"><b data-i="f1t"></b><span class="small" data-i="f1"></span></div>
+  <div class="fact"><b data-i="f2t"></b><span class="small" data-i="f2"></span></div>
+  <div class="fact"><b data-i="f3t"></b><span class="small" data-i="f3"></span></div>
+</div>
+
+<h2 data-i="who"></h2>
 <div class="tabs">
-  <button class="btn on" id="tDrv" type="button">Я водитель</button>
-  <button class="btn" id="tPas" type="button">Я пассажир</button>
+  <button class="btn on" id="tDrv" type="button" data-i="tDrv"></button>
+  <button class="btn" id="tPas" type="button" data-i="tPas"></button>
 </div>
 
 <section class="card" id="form">
-  <h2 id="fTitle">Создать поездку</h2>
-  <label for="from">Откуда</label><select id="from"></select>
-  <label for="to">Куда</label><select id="to"></select>
+  <h2 id="fTitle"></h2>
+  <label for="from" data-i="from"></label><select id="from"></select>
+  <label for="to" data-i="to"></label><select id="to"></select>
   <div class="row">
-    <div><label for="date">Дата</label><input id="date" type="date"></div>
-    <div><label for="time">Время</label><input id="time" type="time" value="09:00"></div>
+    <div><label for="date" data-i="date"></label><input id="date" type="date"></div>
+    <div><label for="time" data-i="time"></label><input id="time" type="time" value="09:00"></div>
   </div>
-  <div id="carRow"><label for="dname">Имя водителя</label><input id="dname" type="text" placeholder="Как вас зовут" autocomplete="given-name"><label for="car">Марка авто</label><input id="car" type="text" placeholder="Например, Toyota Camry"><label for="plate">Номер авто</label><input id="plate" type="text" placeholder="10-AB-123" autocapitalize="characters"></div>
-  <div class="row">
-    <div><label for="seats">Мест</label><input id="seats" type="number" min="1" max="6" value="3"></div>
-    <div><label for="price">Цена, ₼</label><input id="price" type="number" min="0" value="10"></div>
+  <div id="carRow">
+    <label for="dname" data-i="dname"></label><input id="dname" type="text" data-ph="dnamePh" autocomplete="given-name">
+    <label for="car" data-i="car"></label><input id="car" type="text" data-ph="carPh">
+    <label for="plate" data-i="plate"></label><input id="plate" type="text" placeholder="10-AB-123" autocapitalize="characters">
   </div>
-  <button class="btn p" id="go" type="button">Опубликовать поездку</button>
+  <div class="row" id="numRow">
+    <div><label for="seats" data-i="seats"></label><input id="seats" type="number" min="1" max="6" value="3"></div>
+    <div><label for="price" data-i="price"></label><input id="price" type="number" min="0" value="10"></div>
+  </div>
+  <button class="btn p" id="go" type="button" style="width:100%"></button>
 </section>
 
 <div id="list"></div>
 
 <section class="card" id="chat" style="display:none">
-  <div class="row" style="align-items:center;margin-bottom:10px"><h2 id="cTitle" style="flex:1;margin:0">Личный чат</h2><button class="btn rep" id="cRep" type="button" style="flex:0 0 auto;margin:0">Пожаловаться</button></div>
+  <div class="row" style="align-items:center;margin-bottom:10px"><h2 id="cTitle" style="flex:1;margin:0"></h2><button class="btn rep" id="cRep" type="button" style="flex:0 0 auto;margin:0" data-i="report"></button></div>
   <div id="msgs"></div>
   <div class="row">
-    <input id="cin" type="text" placeholder="Сообщение" aria-label="Сообщение">
-    <button class="btn p" id="send" type="button" style="flex:0 0 auto;margin:0">Отправить</button>
+    <input id="cin" type="text" data-ph="msg">
+    <button class="btn p" id="send" type="button" style="flex:0 0 auto;margin:0" data-i="send"></button>
   </div>
 </section>
+
 <section class="card" id="adm" style="display:none">
-  <h2>Панель администратора</h2>
+  <h2 data-i="admT"></h2>
   <div class="stats" id="admStats"></div>
   <div id="admList"></div>
-  <button class="btn danger" id="admClear" type="button">Удалить все поездки и чаты</button>
+  <button class="btn danger" id="admClear" type="button" data-i="admClear"></button>
 </section>
-<button class="btn" id="admBtn" type="button" style="width:100%">Я администратор</button>
-<p class="small" id="shNote">Код администратора: 1234 (проверка в браузере, для реального сервиса нужен вход через сервер).</p>
-<button id="sos" type="button">Пожаловаться админу</button>
+
+<footer>
+  <p class="small" data-i="foot"></p>
+  <p class="small"><span data-i="q"></span> <a href="https://wa.me/994558482041" target="_blank" rel="noopener">WhatsApp: +994 55 848 20 41</a></p>
+  <button class="adm-link" id="admBtn" type="button" data-i="admBtn"></button>
+</footer>
+<button id="sos" type="button" data-i="sos"></button>
 <div id="ov"><div class="card" id="dlgBody" style="width:100%;max-width:420px;margin:0"></div></div>
 </main>
 
 <script>
-var CITIES=["Баку (Bakı)","Гянджа (Gəncə)","Сумгаит (Sumqayıt)","Нахчыван (Naxçıvan)","Ленкорань (Lənkəran)","Шеки (Şəki)","Мингечевир (Mingəçevir)","Ширван (Şirvan)","Ханкенди (Xankəndi)","Нафталан (Naftalan)","Абшеронский район (Abşeron)","Хызинский район (Xızı)","Агсуинский район (Ağsu)","Исмаиллинский район (İsmayıllı)","Гобустанский район (Qobustan)","Шемахинский район (Şamaxı)","Дашкесанский район (Daşkəsən)","Геранбойский район (Goranboy)","Гёйгёльский район (Göygöl)","Самухский район (Samux)","Агджабединский район (Ağcabədi)","Агдамский район (Ağdam)","Бардинский район (Bərdə)","Физулинский район (Füzuli)","Губа (Quba)","Габала (Qəbələ)","Загатала (Zaqatala)","Билясувар (Biləsuvar)"];
+var L={
+az:{h1:'Şəhərlərarası səfərdə yol yoldaşı tapın',alt:'Попутчик — поездки между городами Азербайджана',
+lead:'Başqa şəhərə maşınla gedirsiniz? Boş yerləri yol yoldaşlarına təklif edin və benzin xərcini bölüşün. Getməlisiniz? Eyni istiqamətə gedən sürücünü tapın — avtobusdan rahat, taksidən ucuz.',
+ex:'Məsələn: Bakı → Gəncə, bir yer təxminən 9–10 ₼',ctaDrv:'Sürücüyəm',ctaPas:'Sərnişinəm',
+howT:'Necə işləyir?',s1:'Sürücü səfəri yerləşdirir: haradan, haraya, tarix, saat, boş yerlər və qiymət.',s2:'Sərnişin uyğun səfəri tapır və müraciət göndərir.',s3:'Sürücü müraciəti qəbul edir, çatda razılaşırsınız və birlikdə yola düşürsünüz.',
+f1t:'Taksi deyil',f1:'Sürücü pul qazanmır — yalnız yol xərcini sərnişinlərlə bölüşür.',
+f2t:'Təhlükəsiz',f2:'Sürücünün adı, maşının markası və nömrəsi görünür. Problem olarsa — «Şikayət et» düyməsi.',
+f3t:'Pulsuz',f3:'Saytdan istifadə ödənişsizdir.',
+who:'Siz kimsiniz?',tDrv:'Mən sürücüyəm',tPas:'Mən sərnişinəm',fDrv:'Səfər yerləşdirin',fPas:'Səfər tapın',goDrv:'Səfəri yerləşdir',goPas:'Səfərləri göstər',
+from:'Haradan',to:'Haraya',date:'Tarix',time:'Saat',dname:'Sürücünün adı',dnamePh:'Adınız',car:'Maşının markası',carPh:'Məsələn, Toyota Camry',plate:'Maşının nömrəsi',seats:'Boş yer',price:'Bir yerin qiyməti, ₼',
+report:'Şikayət et',msg:'Mesaj',send:'Göndər',admT:'Admin paneli',admClear:'Bütün səfərləri və çatları sil',admBtn:'Administrator girişi',sos:'Adminə şikayət',
+foot:'Yol yoldaşı — Azərbaycanda şəhərlərarası birgə səfərlər. Sınaq versiyası.',q:'Sualınız var?',
+ok:'OK',yes:'Bəli',no:'Xeyr',emptyPas:'Bu istiqamətdə hələ səfər yoxdur. Başqa istiqamət seçin.',emptyDrv:'Hələ səfəriniz yoxdur. İlk səfəri yerləşdirin.',
+book:'Müraciət göndər',noSeats:'Boş yer yoxdur',pending:'Müraciət göndərildi. Sürücünün cavabını gözləyin.',chatDrv:'Sürücü ilə çatı aç',declinedP:'Sürücü müraciəti rədd etdi.',unbook:'Müraciəti ləğv et',
+pas:'Sərnişin',acc:'Qəbul et',dec:'Rədd et',openChat:'Çatı aç',declined:'Rədd edildi.',noReq:'Hələ müraciət yoxdur.',
+seatsN:'boş yer',driver:'sürücü',carL:'Maşın',plateL:'nömrə',cancelTrip:'Səfəri ləğv et',
+diffCity:'Fərqli şəhərlər seçin',needCar:'Sürücünün adını, maşının markasını və nömrəsini yazın',
+askCancel:'Səfər ləğv edilsin? Ona aid müraciətlər və çatlar silinəcək.',askUnbook:'Müraciət ləğv edilsin?',
+chatWithDrv:'Sürücü ilə çat',chatWithPas:'Sərnişin ilə çat',chatEmpty:'İlk mesajı yazın.',trip:'Səfər',
+reason:'Səbəb',r1:'Təhlükəli sürmə',r2:'Təhqir və ya hədə',r3:'Fırıldaqçılıq',r4:'Səfərə gəlmədi',r5:'Digər',details:'Ətraflı',detailsPh:'Nə baş verdi?',sendRep:'Şikayəti göndər',cancel:'Ləğv et',
+repSent:'Şikayət göndərildi',repSent2:'Administrator ona baxacaq.',close:'Bağla',general:'Adminə ümumi şikayət',chatL:'Çat',
+stTrips:'səfər',stSeats:'yer',stChats:'çat',del:'Sil',reps:'Şikayətlər',open:'açıq',closeRep:'Müraciəti bağla',closed:'Bağlanıb',noTrips:'Səfər yoxdur.',noReps:'Müraciət yoxdur.',
+pinT:'Admin kodu',login:'Daxil ol',wrong:'Yanlış kod',askClear:'Bütün səfərlər və çatlar silinsin?',saveErr:'Ümumi bazaya yazmaq alınmadı.'},
+ru:{h1:'Найдите попутчиков для поездки между городами',alt:'Yol yoldaşı — şəhərlərarası birgə səfərlər',
+lead:'Едете на машине в другой город? Предложите свободные места попутчикам и разделите расходы на бензин. Нужно уехать? Найдите водителя, который едет туда же — удобнее автобуса и дешевле такси.',
+ex:'Например: Баку → Гянджа, одно место примерно 9–10 ₼',ctaDrv:'Я водитель',ctaPas:'Я пассажир',
+howT:'Как это работает?',s1:'Водитель размещает поездку: откуда, куда, дата, время, свободные места и цена.',s2:'Пассажир находит подходящую поездку и отправляет заявку.',s3:'Водитель принимает заявку, вы договариваетесь в чате и едете вместе.',
+f1t:'Это не такси',f1:'Водитель не зарабатывает — он только делит расходы на дорогу с пассажирами.',
+f2t:'Безопасно',f2:'Видно имя водителя, марку и номер машины. Если что-то не так — кнопка «Пожаловаться».',
+f3t:'Бесплатно',f3:'Пользоваться сайтом ничего не стоит.',
+who:'Кто вы?',tDrv:'Я водитель',tPas:'Я пассажир',fDrv:'Разместите поездку',fPas:'Найдите поездку',goDrv:'Опубликовать поездку',goPas:'Показать поездки',
+from:'Откуда',to:'Куда',date:'Дата',time:'Время',dname:'Имя водителя',dnamePh:'Как вас зовут',car:'Марка машины',carPh:'Например, Toyota Camry',plate:'Номер машины',seats:'Свободных мест',price:'Цена за место, ₼',
+report:'Пожаловаться',msg:'Сообщение',send:'Отправить',admT:'Панель администратора',admClear:'Удалить все поездки и чаты',admBtn:'Вход для администратора',sos:'Пожаловаться админу',
+foot:'Попутчик — совместные поездки между городами Азербайджана. Тестовая версия.',q:'Есть вопросы?',
+ok:'OK',yes:'Да',no:'Нет',emptyPas:'Поездок по этому маршруту пока нет. Выберите другой маршрут.',emptyDrv:'У вас пока нет поездок. Опубликуйте первую.',
+book:'Отправить заявку',noSeats:'Мест нет',pending:'Заявка отправлена. Ждём ответ водителя.',chatDrv:'Открыть чат с водителем',declinedP:'Водитель отклонил заявку.',unbook:'Отменить заявку',
+pas:'Пассажир',acc:'Принять',dec:'Отклонить',openChat:'Открыть чат',declined:'Отклонена.',noReq:'Заявок пока нет.',
+seatsN:'мест',driver:'водитель',carL:'Машина',plateL:'номер',cancelTrip:'Отменить поездку',
+diffCity:'Выберите разные города',needCar:'Укажите имя водителя, марку и номер машины',
+askCancel:'Отменить поездку? Заявки и чаты по ней будут удалены.',askUnbook:'Отменить заявку?',
+chatWithDrv:'Чат с водителем',chatWithPas:'Чат с пассажиром',chatEmpty:'Напишите первое сообщение.',trip:'Поездка',
+reason:'Причина',r1:'Опасное вождение',r2:'Оскорбления или угрозы',r3:'Мошенничество',r4:'Не явился на поездку',r5:'Другое',details:'Подробности',detailsPh:'Что произошло?',sendRep:'Отправить жалобу',cancel:'Отмена',
+repSent:'Жалоба отправлена',repSent2:'Администратор рассмотрит её.',close:'Закрыть',general:'Общая жалоба администратору',chatL:'Чат',
+stTrips:'поездок',stSeats:'мест',stChats:'чатов',del:'Удалить',reps:'Жалобы',open:'открыто',closeRep:'Закрыть обращение',closed:'Закрыто',noTrips:'Поездок нет.',noReps:'Обращений нет.',
+pinT:'Код администратора',login:'Войти',wrong:'Неверный код',askClear:'Удалить все поездки и чаты?',saveErr:'Не удалось сохранить в общую базу.'}};
+var CITIES=["Баку (Bakı)","Гянджа (Gəncə)","Сумгаит (Sumqayıt)","Нахчыван (Naxçıvan)","Ленкорань (Lənkəran)","Шеки (Şəki)","Мингечевир (Mingəçevir)","Ширван (Şirvan)","Ханкенди (Xankəndi)","Нафталан (Naftalan)","Губа (Quba)","Габала (Qəbələ)","Загатала (Zaqatala)","Билясувар (Biləsuvar)","Абшеронский район (Abşeron)","Хызинский район (Xızı)","Агсуинский район (Ağsu)","Исмаиллинский район (İsmayıllı)","Гобустанский район (Qobustan)","Шемахинский район (Şamaxı)","Дашкесанский район (Daşkəsən)","Геранбойский район (Goranboy)","Гёйгёльский район (Göygöl)","Самухский район (Samux)","Агджабединский район (Ağcabədi)","Агдамский район (Ağdam)","Бардинский район (Bərdə)","Физулинский район (Füzuli)"];
+var lang='az';try{var sl=localStorage.getItem('poputchikLang');if(sl==='ru'||sl==='az')lang=sl}catch(e){}
+function T(k){return L[lang][k]||k}
+function city(c){var m=/^(.*) \(([^)]+)\)$/.exec(c||'');if(!m)return c;return lang==='az'?(m[1].indexOf('район')>-1?m[2]+' rayonu':m[2]):m[1]}
 var $=function(i){return document.getElementById(i)},role='drv',me='local',db=null,chatKey=null,adminOn=false;
 var S={trips:{},chats:{},reports:{}},ADMIN_PIN='1234';
-['from','to'].forEach(function(id,k){$(id).innerHTML=CITIES.map(function(c,i){return '<option'+(i===k?' selected':'')+'>'+c+'</option>'}).join('')});
-$('date').value=new Date().toISOString().slice(0,10);
+function fillCities(){['from','to'].forEach(function(id,k){var cur=$(id).value||CITIES[k];$(id).innerHTML=CITIES.map(function(c){return '<option value="'+c+'"'+(c===cur?' selected':'')+'>'+esc(city(c))+'</option>'}).join('')})}
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function say(m){openDlg('<p>'+esc(m)+'</p><button class="btn p" id="okb" type="button" style="width:100%">OK</button>');$('okb').onclick=closeDlg}
-function ask(m,fn){openDlg('<p>'+esc(m)+'</p><div class="row"><button class="btn danger" id="yes" type="button">Да</button><button class="btn" id="no" type="button">Нет</button></div>');$('no').onclick=closeDlg;$('yes').onclick=function(){closeDlg();fn()}}
-window.alert=say;
+function setLang(l){
+  lang=l;try{localStorage.setItem('poputchikLang',l)}catch(e){}
+  document.documentElement.lang=l;
+  $('lAz').classList.toggle('on',l==='az');$('lRu').classList.toggle('on',l==='ru');
+  document.querySelectorAll('[data-i]').forEach(function(n){n.textContent=T(n.getAttribute('data-i'))});
+  document.querySelectorAll('[data-ph]').forEach(function(n){n.placeholder=T(n.getAttribute('data-ph'));n.setAttribute('aria-label',n.placeholder)});
+  fillCities();setRole(role,true);if(chatKey)setChatTitle();if(adminOn)drawAdm();
+}
+$('lAz').onclick=function(){setLang('az')};$('lRu').onclick=function(){setLang('ru')};
+$('date').value=new Date().toISOString().slice(0,10);
+function say(m){openDlg('<p>'+esc(m)+'</p><button class="btn p" id="okb" type="button" style="width:100%">'+T('ok')+'</button>');$('okb').onclick=closeDlg}
+function ask(m,fn){openDlg('<p>'+esc(m)+'</p><div class="row"><button class="btn danger" id="yes" type="button">'+T('yes')+'</button><button class="btn" id="no" type="button">'+T('no')+'</button></div>');$('no').onclick=closeDlg;$('yes').onclick=function(){closeDlg();fn()}}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 try{var ls=JSON.parse(localStorage.getItem('poputchik2')||'null');if(ls)S=ls}catch(e){}
 function put(c,id){
-  if(db){db.collection(c).doc(id).set(JSON.parse(JSON.stringify(S[c][id]))).catch(function(){$('shNote').textContent='Не удалось сохранить в общую базу.'})}
+  if(db){db.collection(c).doc(id).set(JSON.parse(JSON.stringify(S[c][id]))).catch(function(){say(T('saveErr'))})}
   else{try{localStorage.setItem('poputchik2',JSON.stringify(S))}catch(e){}}
   refresh();
 }
 function del(c,id){delete S[c][id];if(db)db.collection(c).doc(id).delete().catch(function(){});else try{localStorage.setItem('poputchik2',JSON.stringify(S))}catch(e){};refresh()}
 function arr(c){return Object.keys(S[c]).map(function(k){var o=S[c][k];o.id=k;return o}).sort(function(a,b){return (b.ts||0)-(a.ts||0)})}
 function refresh(){render();if(chatKey)drawChat();if(adminOn)drawAdm()}
-function setRole(r){
-  role=r;chatKey=null;$('chat').style.display='none';
+function setRole(r,keep){
+  role=r;if(!keep){chatKey=null;$('chat').style.display='none'}
   $('tDrv').classList.toggle('on',r==='drv');$('tPas').classList.toggle('on',r==='pas');
-  $('fTitle').textContent=r==='drv'?'Создать поездку':'Найти поездку';
-  $('go').textContent=r==='drv'?'Опубликовать поездку':'Найти поездки';
-  $('seats').parentNode.style.display=$('price').parentNode.style.display=r==='drv'?'':'none';
-  $('carRow').style.display=r==='drv'?'':'none';render();
+  $('fTitle').textContent=T(r==='drv'?'fDrv':'fPas');
+  $('go').textContent=T(r==='drv'?'goDrv':'goPas');
+  $('numRow').style.display=$('carRow').style.display=r==='drv'?'':'none';render();
 }
+function goForm(r){setRole(r);$('form').scrollIntoView({behavior:'smooth'})}
+$('cDrv').onclick=function(){goForm('drv')};$('cPas').onclick=function(){goForm('pas')};
 function render(){
   var f=$('from').value,t=$('to').value,list=arr('trips');
   if(role==='pas')list=list.filter(function(x){return x.from===f&&x.to===t});
   else list=list.filter(function(x){return x.owner===me});
-  if(!list.length){$('list').innerHTML='<div class="card empty">'+(role==='pas'?'Поездок по этому маршруту пока нет. Измените маршрут.':'У вас пока нет поездок. Опубликуйте первую.')+'</div>';return}
+  if(!list.length){$('list').innerHTML='<div class="card empty">'+T(role==='pas'?'emptyPas':'emptyDrv')+'</div>';return}
   $('list').innerHTML=list.map(function(x){
     var bks=x.bks||{},act='',own=x.owner===me,b=bks[me];
     if(role==='pas'){
-      if(!b)act=x.seats>0?'<button class="btn p" type="button" data-book="'+x.id+'">Отправить заявку</button>':'<div class="small">Мест нет</div>';
-      else if(b.st==='pending')act='<div class="small">Заявка отправлена. Ждём ответ водителя.</div>';
-      else if(b.st==='accepted')act='<button class="btn p" type="button" data-chat="'+x.id+'_'+me+'">Открыть чат с водителем</button>';
-      else act='<div class="small">Водитель отклонил заявку.</div>';
-      if(b)act+='<button class="btn" type="button" data-unbook="'+x.id+'">Отменить заявку</button>';
+      if(!b)act=x.seats>0?'<button class="btn p" type="button" data-book="'+x.id+'">'+T('book')+'</button>':'<div class="small">'+T('noSeats')+'</div>';
+      else if(b.st==='pending')act='<div class="small">'+T('pending')+'</div>';
+      else if(b.st==='accepted')act='<button class="btn p" type="button" data-chat="'+x.id+'_'+me+'">'+T('chatDrv')+'</button>';
+      else act='<div class="small">'+T('declinedP')+'</div>';
+      if(b)act+='<button class="btn" type="button" data-unbook="'+x.id+'">'+T('unbook')+'</button>';
     }else{
       var ks=Object.keys(bks);
-      act=ks.length?ks.map(function(k,i){var q=bks[k];return '<div class="small" style="margin-top:8px">Пассажир '+(i+1)+(q.name?' ('+esc(q.name)+')':'')+'</div>'+
-        (q.st==='pending'?'<div class="row"><button class="btn p" type="button" data-acc="'+x.id+'|'+k+'">Принять</button><button class="btn" type="button" data-dec="'+x.id+'|'+k+'">Отклонить</button></div>':
-        q.st==='accepted'?'<button class="btn p" type="button" data-chat="'+x.id+'_'+k+'">Открыть чат</button>':'<div class="small">Отклонена.</div>')}).join(''):'<div class="small">Заявок пока нет.</div>';
+      act=ks.length?ks.map(function(k,i){var q=bks[k];return '<div class="small" style="margin-top:8px">'+T('pas')+' '+(i+1)+(q.name?' ('+esc(q.name)+')':'')+'</div>'+
+        (q.st==='pending'?'<div class="row"><button class="btn p" type="button" data-acc="'+x.id+'|'+k+'">'+T('acc')+'</button><button class="btn" type="button" data-dec="'+x.id+'|'+k+'">'+T('dec')+'</button></div>':
+        q.st==='accepted'?'<button class="btn p" type="button" data-chat="'+x.id+'_'+k+'">'+T('openChat')+'</button>':'<div class="small">'+T('declined')+'</div>')}).join(''):'<div class="small">'+T('noReq')+'</div>';
     }
-    return '<div class="card trip"><div class="r">'+esc(x.from)+' → '+esc(x.to)+'</div><div class="small">'+esc(x.date)+', '+esc(x.time)+' · мест: '+x.seats+' · '+x.price+' ₼ · водитель '+esc(x.driver)+'</div>'+(x.car?'<div class="small">Авто: '+esc(x.car)+((own||(b&&b.st==='accepted'))&&x.plate?', номер '+esc(x.plate):'')+'</div>':'')+act+(role==='drv'&&own?'<div><button class="btn danger" type="button" data-cancel="'+x.id+'">Отменить поездку</button></div></div>':'<div><button class="btn rep" type="button" data-rep="'+x.id+'">Пожаловаться</button></div></div>')}).join('');
+    return '<div class="card trip"><div class="r">'+esc(city(x.from))+' → '+esc(city(x.to))+'</div><div class="small">'+esc(x.date)+', '+esc(x.time)+' · '+T('seatsN')+': '+x.seats+' · '+x.price+' ₼ · '+T('driver')+': '+esc(x.driver)+'</div>'+(x.car?'<div class="small">'+T('carL')+': '+esc(x.car)+((own||(b&&b.st==='accepted'))&&x.plate?', '+T('plateL')+' '+esc(x.plate):'')+'</div>':'')+act+(role==='drv'&&own?'<div><button class="btn danger" type="button" data-cancel="'+x.id+'">'+T('cancelTrip')+'</button></div></div>':'<div><button class="btn rep" type="button" data-rep="'+x.id+'">'+T('report')+'</button></div></div>')}).join('');
 }
 $('tDrv').onclick=function(){setRole('drv')};$('tPas').onclick=function(){setRole('pas')};
 $('from').onchange=$('to').onchange=function(){if(role==='pas')render()};
 $('go').onclick=function(){
-  if(role==='pas'){render();return}
-  if($('from').value===$('to').value){alert('Выберите разные города');return}
+  if(role==='pas'){render();$('list').scrollIntoView({behavior:'smooth'});return}
+  if($('from').value===$('to').value){say(T('diffCity'));return}
   var dn=$('dname').value.trim(),car=$('car').value.trim(),plate=$('plate').value.trim().toUpperCase();
-  if(!dn||!car||!plate){alert('Укажите имя водителя, марку и номер авто');return}
+  if(!dn||!car||!plate){say(T('needCar'));return}
   var id=uid();S.trips[id]={ts:Date.now(),from:$('from').value,to:$('to').value,date:$('date').value,time:$('time').value,seats:+$('seats').value||1,price:+$('price').value||0,driver:dn,car:car,plate:plate,owner:me,bks:{}};
   put('trips',id);
 };
+function setChatTitle(){var tid=chatKey.split('_')[0],x=S.trips[tid];$('cTitle').textContent=(role==='pas'?T('chatWithDrv')+': '+(x?x.driver:''):T('chatWithPas'))+(x?' · '+city(x.from)+' → '+city(x.to):'')}
 $('list').onclick=function(e){
   var a=e.target.dataset||{};
-  if(a.cancel){var cid=a.cancel;ask('Отменить поездку? Заявки и чаты по ней будут удалены.',function(){Object.keys(S.chats).forEach(function(k){if(k.indexOf(cid+'_')===0)del('chats',k)});del('trips',cid);chatKey=null;$('chat').style.display='none'})}
-  else if(a.unbook){var tid=a.unbook;ask('Отменить заявку?',function(){var x=S.trips[tid];if(!x||!x.bks||!x.bks[me])return;if(x.bks[me].st==='accepted')x.seats++;delete x.bks[me];del('chats',tid+'_'+me);chatKey=null;$('chat').style.display='none';put('trips',tid)})}
+  if(a.cancel){var cid=a.cancel;ask(T('askCancel'),function(){Object.keys(S.chats).forEach(function(k){if(k.indexOf(cid+'_')===0)del('chats',k)});del('trips',cid);chatKey=null;$('chat').style.display='none'})}
+  else if(a.unbook){var tid=a.unbook;ask(T('askUnbook'),function(){var x=S.trips[tid];if(!x||!x.bks||!x.bks[me])return;if(x.bks[me].st==='accepted')x.seats++;delete x.bks[me];del('chats',tid+'_'+me);chatKey=null;$('chat').style.display='none';put('trips',tid)})}
   else if(a.book){var x=S.trips[a.book];if(!x)return;x.bks=x.bks||{};if(x.bks[me])return;x.bks[me]={st:'pending',name:''};put('trips',a.book)}
   else if(a.acc||a.dec){var p=(a.acc||a.dec).split('|'),x=S.trips[p[0]];if(!x||!x.bks||!x.bks[p[1]])return;
-    if(a.acc){if(x.seats<1){alert('Мест нет');return}x.bks[p[1]].st='accepted';x.seats--}else x.bks[p[1]].st='declined';put('trips',p[0])}
-  else if(a.chat){chatKey=a.chat;var tid=a.chat.split('_')[0],x=S.trips[tid];$('cTitle').textContent=(role==='pas'?'Чат с водителем: '+(x?x.driver:''):'Чат с пассажиром')+(x?' · '+x.from+' → '+x.to:'');$('chat').style.display='';drawChat();$('chat').scrollIntoView({behavior:'smooth'})}
-  else if(a.rep){var x=S.trips[a.rep];if(x)openReport('Поездка '+x.from+' → '+x.to+', водитель '+x.driver)}
+    if(a.acc){if(x.seats<1){say(T('noSeats'));return}x.bks[p[1]].st='accepted';x.seats--}else x.bks[p[1]].st='declined';put('trips',p[0])}
+  else if(a.chat){chatKey=a.chat;setChatTitle();$('chat').style.display='';drawChat();$('chat').scrollIntoView({behavior:'smooth'})}
+  else if(a.rep){var x=S.trips[a.rep];if(x)openReport(T('trip')+' '+city(x.from)+' → '+city(x.to)+', '+T('driver')+' '+x.driver)}
 };
-function drawChat(){var m=(S.chats[chatKey]||{}).m||[];$('msgs').innerHTML=m.map(function(x){return '<div class="msg'+(x.by===me?' me':'')+'">'+esc(x.t)+'</div>'}).join('')||'<div class="small">Напишите первое сообщение.</div>';$('msgs').scrollTop=1e6}
+function drawChat(){var m=(S.chats[chatKey]||{}).m||[];$('msgs').innerHTML=m.map(function(x){return '<div class="msg'+(x.by===me?' me':'')+'">'+esc(x.t)+'</div>'}).join('')||'<div class="small">'+T('chatEmpty')+'</div>';$('msgs').scrollTop=1e6}
 $('send').onclick=function(){var v=$('cin').value.trim();if(!v||!chatKey)return;var c=S.chats[chatKey]=S.chats[chatKey]||{m:[]};c.m=(c.m||[]).concat([{by:me,t:v}]);$('cin').value='';put('chats',chatKey)};
 $('cin').onkeydown=function(e){if(e.key==='Enter')$('send').click()};
 function openDlg(h){$('dlgBody').innerHTML=h;$('ov').style.display='flex'}
 function closeDlg(){$('ov').style.display='none'}
 $('ov').onclick=function(e){if(e.target===$('ov'))closeDlg()};
 function openReport(target){
-  openDlg('<h2>Пожаловаться</h2><p class="small">'+esc(target)+'</p><label for="rr">Причина</label><select id="rr"><option>Опасное вождение</option><option>Оскорбления или угрозы</option><option>Мошенничество</option><option>Не явился на поездку</option><option>Другое</option></select><label for="rt">Подробности</label><input id="rt" type="text" placeholder="Что произошло"><button class="btn p" id="rsend" type="button" style="width:100%">Отправить жалобу</button><button class="btn" id="rcl" type="button" style="width:100%">Отмена</button>');
+  openDlg('<h2>'+T('report')+'</h2><p class="small">'+esc(target)+'</p><label for="rr">'+T('reason')+'</label><select id="rr">'+['r1','r2','r3','r4','r5'].map(function(k){return '<option>'+T(k)+'</option>'}).join('')+'</select><label for="rt">'+T('details')+'</label><input id="rt" type="text" placeholder="'+T('detailsPh')+'"><button class="btn p" id="rsend" type="button" style="width:100%">'+T('sendRep')+'</button><button class="btn" id="rcl" type="button" style="width:100%">'+T('cancel')+'</button>');
   $('rcl').onclick=closeDlg;
-  $('rsend').onclick=function(){var id=uid();S.reports[id]={ts:Date.now(),reason:$('rr').value,target:target,text:$('rt').value.trim(),at:new Date().toLocaleString('ru-RU'),open:true};put('reports',id);
-    openDlg('<h2>Жалоба отправлена</h2><p>Администратор рассмотрит её.</p><button class="btn p" id="ok" type="button" style="width:100%">Закрыть</button>');$('ok').onclick=closeDlg};
+  $('rsend').onclick=function(){var id=uid();S.reports[id]={ts:Date.now(),reason:$('rr').value,target:target,text:$('rt').value.trim(),at:new Date().toLocaleString(lang==='az'?'az-AZ':'ru-RU'),open:true};put('reports',id);
+    openDlg('<h2>'+T('repSent')+'</h2><p>'+T('repSent2')+'</p><button class="btn p" id="ok" type="button" style="width:100%">'+T('close')+'</button>');$('ok').onclick=closeDlg};
 }
-$('sos').onclick=function(){openReport('Общая жалоба администратору')};
-$('cRep').onclick=function(){openReport('Чат: '+$('cTitle').textContent)};
+$('sos').onclick=function(){openReport(T('general'))};
+$('cRep').onclick=function(){openReport(T('chatL')+': '+$('cTitle').textContent)};
 function drawAdm(){
   var trips=arr('trips'),reps=arr('reports'),seats=trips.reduce(function(a,x){return a+(+x.seats||0)},0),o=reps.filter(function(r){return r.open}).length;
-  $('admStats').innerHTML='<div><b>'+trips.length+'</b><span class="small">поездок</span></div><div><b>'+seats+'</b><span class="small">мест</span></div><div><b>'+Object.keys(S.chats).length+'</b><span class="small">чатов</span></div>';
-  $('admList').innerHTML=(trips.map(function(x){return '<div class="card trip"><div class="r">'+esc(x.from)+' → '+esc(x.to)+'</div><div class="small">'+esc(x.date)+', '+esc(x.time)+' · '+x.price+' ₼ · '+esc(x.driver)+(x.car?' · '+esc(x.car)+(x.plate?', '+esc(x.plate):''):'')+'</div><button class="btn danger" type="button" data-del="'+x.id+'">Удалить</button></div>'}).join('')||'<div class="empty">Поездок нет.</div>')+
-  '<h2 style="margin-top:14px">Жалобы ('+o+' открыто)</h2>'+(reps.map(function(r){return '<div class="card trip"><div class="r">'+esc(r.reason||'')+'</div><div class="small">'+esc(r.target)+(r.text?' · '+esc(r.text):'')+' · '+esc(r.at)+'</div>'+(r.open?'<button class="btn" type="button" data-rc="'+r.id+'">Закрыть обращение</button>':'<div class="small">Закрыто</div>')+'</div>'}).join('')||'<div class="empty">Обращений нет.</div>');
+  $('admStats').innerHTML='<div><b>'+trips.length+'</b><span class="small">'+T('stTrips')+'</span></div><div><b>'+seats+'</b><span class="small">'+T('stSeats')+'</span></div><div><b>'+Object.keys(S.chats).length+'</b><span class="small">'+T('stChats')+'</span></div>';
+  $('admList').innerHTML=(trips.map(function(x){return '<div class="card trip"><div class="r">'+esc(city(x.from))+' → '+esc(city(x.to))+'</div><div class="small">'+esc(x.date)+', '+esc(x.time)+' · '+x.price+' ₼ · '+esc(x.driver)+(x.car?' · '+esc(x.car)+(x.plate?', '+esc(x.plate):''):'')+'</div><button class="btn danger" type="button" data-del="'+x.id+'">'+T('del')+'</button></div>'}).join('')||'<div class="empty">'+T('noTrips')+'</div>')+
+  '<h2 style="margin-top:14px">'+T('reps')+' ('+o+' '+T('open')+')</h2>'+(reps.map(function(r){return '<div class="card trip"><div class="r">'+esc(r.reason||'')+'</div><div class="small">'+esc(r.target)+(r.text?' · '+esc(r.text):'')+' · '+esc(r.at)+'</div>'+(r.open?'<button class="btn" type="button" data-rc="'+r.id+'">'+T('closeRep')+'</button>':'<div class="small">'+T('closed')+'</div>')+'</div>'}).join('')||'<div class="empty">'+T('noReps')+'</div>');
 }
 $('admBtn').onclick=function(){
   if(adminOn){adminOn=false;$('adm').style.display='none';return}
-  openDlg('<h2>Код администратора</h2><input id="pin" type="password" inputmode="numeric" aria-label="Код"><button class="btn p" id="pok" type="button" style="width:100%">Войти</button>');
-  $('pok').onclick=function(){if($('pin').value!==ADMIN_PIN){$('pin').value='';$('pin').placeholder='Неверный код';return}closeDlg();adminOn=true;$('adm').style.display='';drawAdm();$('adm').scrollIntoView({behavior:'smooth'})};
+  openDlg('<h2>'+T('pinT')+'</h2><input id="pin" type="password" inputmode="numeric" aria-label="'+T('pinT')+'"><button class="btn p" id="pok" type="button" style="width:100%">'+T('login')+'</button>');
+  $('pok').onclick=function(){if($('pin').value!==ADMIN_PIN){$('pin').value='';$('pin').placeholder=T('wrong');return}closeDlg();adminOn=true;$('adm').style.display='';drawAdm();$('adm').scrollIntoView({behavior:'smooth'})};
 };
 $('adm').onclick=function(e){var d=e.target.dataset||{};
   if(d.del){Object.keys(S.chats).forEach(function(k){if(k.indexOf(d.del+'_')===0)del('chats',k)});del('trips',d.del)}
   if(d.rc&&S.reports[d.rc]){S.reports[d.rc].open=false;put('reports',d.rc)}};
-$('admClear').onclick=function(){ask('Удалить все поездки и чаты?',function(){['trips','chats'].forEach(function(c){Object.keys(S[c]).forEach(function(k){del(c,k)})});chatKey=null;$('chat').style.display='none'})};
-setRole('drv');
-claude.use('user').then(function(u){return u&&u.id?u.id():null}).then(function(i){if(i){me=i;refresh()}}).catch(function(){});
-claude.use('db').then(function(d){
-  if(!d){$('shNote').textContent='Общая база недоступна: данные хранятся только на этом устройстве.';return}
-  db=d;
-  ['trips','chats','reports'].forEach(function(c){
-    db.collection(c).onSnapshot(function(s){var o={};s.docs.forEach(function(x){o[x.id]=JSON.parse(JSON.stringify(x.data()))});S[c]=o;refresh()},function(){});
-  });
-}).catch(function(){});
-claude.use('downloads').then(function(d){
-  if(!d)return;$('dl').style.display='';
-  $('dl').onclick=function(){
-    d.save({filename:'poputchik.html',data:'<!DOCTYPE html>\n'+document.documentElement.outerHTML}).then(function(){$('dlNote').textContent='Файл сохранён. Откройте poputchik.html в браузере телефона.'}).catch(function(e){$('dlNote').textContent=e&&e.code==='declined'?'Сохранение отменено.':'Не удалось сохранить файл.'});
-  };
-}).catch(function(){});
+$('admClear').onclick=function(){ask(T('askClear'),function(){['trips','chats'].forEach(function(c){Object.keys(S[c]).forEach(function(k){del(c,k)})});chatKey=null;$('chat').style.display='none'})};
+setLang(lang);
 </script>
 </body>
 </html>
