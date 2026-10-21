@@ -58,6 +58,14 @@ footer a{color:var(--acc);font-weight:600}
 .qrbox{display:flex;justify-content:center;margin:6px 0}
 .qrbox svg,.qrbox img{width:180px;height:180px;background:#fff;padding:6px;border-radius:8px}
 .printonly{display:none}
+.notaxi{border:2px solid #d4a017;background:#fff8e1;color:#4a3800;border-radius:12px;padding:12px 14px;margin:0 0 16px;font-weight:600}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .notaxi{background:#2e2610;color:#f3dfa0}}
+.hint{background:var(--soft);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:14px}
+.warn{color:#b35400;font-weight:600}
+.agree{display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:14px}
+.agree input{width:auto;margin-top:3px}
+.linkbtn{background:none;border:0;padding:0;color:var(--acc);font:inherit;text-decoration:underline;cursor:pointer}
+.rules h3{font-size:16px;margin:14px 0 6px}.rules li{margin-bottom:6px}.rules{max-height:70vh;overflow:auto}
 @media print{body{background:#fff;color:#000}main{padding:0;max-width:none}main>*:not(#qrCard){display:none!important}#qrCard{display:block;border:0;text-align:center;background:#fff;color:#000}#qrCard .row,#qrCard h2,#qrCard [data-i=qrSub]{display:none}.printonly{display:block;font:700 34px system-ui,sans-serif;margin:30px 0 6px}.printonly.s{font:400 20px system-ui,sans-serif;margin:0 0 24px}.qrbox svg,.qrbox img{width:12cm;height:12cm}#qrCard .small{font-size:22px;color:#000}}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 </style>
@@ -75,6 +83,7 @@ footer a{color:var(--acc);font-weight:600}
 <p class="alt" data-i="alt"></p>
 <p class="lead" data-i="lead"></p>
 <p class="ex" data-i="ex"></p>
+<p class="notaxi" data-i="notaxi"></p>
 <div class="cta">
   <button class="btn p" id="cDrv" type="button" data-i="ctaDrv"></button>
   <button class="btn" id="cPas" type="button" data-i="ctaPas"></button>
@@ -128,6 +137,8 @@ footer a{color:var(--acc);font-weight:600}
     <div><label for="seats" data-i="seats"></label><input id="seats" type="number" min="1" max="6" value="3"></div>
     <div><label for="price" data-i="price"></label><input id="price" type="number" min="0" value="10"></div>
   </div>
+  <div class="hint" id="fuel" style="display:none"></div>
+  <label class="agree" id="agreeRow"><input type="checkbox" id="agree"><span><span data-i="agree"></span> <button class="linkbtn" type="button" data-i="rulesL" data-rules="1"></button></span></label>
   <button class="btn p" id="go" type="button" style="width:100%"></button>
 </section>
 
@@ -152,6 +163,7 @@ footer a{color:var(--acc);font-weight:600}
 <footer>
   <p class="small" data-i="foot"></p>
   <p class="small"><span data-i="q"></span> <a href="https://wa.me/994558482041" target="_blank" rel="noopener">WhatsApp: +994 55 848 20 41</a></p>
+  <button class="adm-link" type="button" data-i="rulesL" data-rules="1"></button>
   <button class="adm-link" id="admBtn" type="button" data-i="admBtn"></button>
 </footer>
 <button id="sos" type="button" data-i="sos"></button>
@@ -213,15 +225,15 @@ function city(c){var m=/^(.*) \(([^)]+)\)$/.exec(c||'');if(!m)return c;return la
 var EXTRA={
 az:{loading:'Yüklənir…',authErr:'Server ilə əlaqə qurulmadı. Bir az sonra səhifəni yeniləyin.',askName:'Adınızı yazın ki, sürücü kimin müraciət etdiyini bilsin',namePh:'Adınız',err:'Xəta baş verdi. Yenidən cəhd edin.',seatsLeft:'boş yer',
 notAdmin:'Siz administrator deyilsiniz. Bu kodu sayt sahibinə göndərin:',block:'Sürücünü blokla',askBlock:'Bu sürücü bloklansın? Onun gələcək səfərləri silinəcək.',blocked:'Sürücü bloklandı.',past:'keçmiş',refresh:'Yenilə',
-pendingN:'Yeni müraciət',qrT:'Dostlarınızla paylaşın',qrSub:'Telefon kamerasını QR koda tutun — sayt dərhal açılacaq.',qrPrint:'Çap et',qrShare:'Linki paylaş',copied:'Link kopyalandı',pastTime:'Bu vaxt artıq keçib. Gələcək tarix və saat seçin.'},
+pendingN:'Yeni müraciət',notaxi:'🚫🚕 Bu taksi deyil. Sürücü öz işi ilə gedir və yalnız yol xərcini (benzin) yol yoldaşları ilə bölüşür.',fuelHint:'Bu marşrut təxminən {km} km. Benzin bütün maşın üçün ~{fuel} ₼. Sizinlə birlikdə {n} nəfərə bölünsə — adambaşı ~{per} ₼.',fuelNote:'Qiyməti özünüz yazın, sərnişinlə razılaşın. Qiymət yalnız yol xərcini örtməlidir.',fuelHigh:'Qiymət yol xərcindən xeyli yüksəkdir — bu, taksi kimi görünə bilər.',agree:'Qaydalarla və məlumatların emalı ilə razıyam.',rulesL:'Qaydalar',needAgree:'Davam etmək üçün qaydalarla razılaşın.',qrT:'Dostlarınızla paylaşın',qrSub:'Telefon kamerasını QR koda tutun — sayt dərhal açılacaq.',qrPrint:'Çap et',qrShare:'Linki paylaş',copied:'Link kopyalandı',pastTime:'Bu vaxt artıq keçib. Gələcək tarix və saat seçin.'},
 ru:{loading:'Загрузка…',authErr:'Не удалось связаться с сервером. Обновите страницу чуть позже.',askName:'Напишите ваше имя, чтобы водитель знал, кто отправил заявку',namePh:'Ваше имя',err:'Произошла ошибка. Попробуйте ещё раз.',seatsLeft:'свободно мест',
 notAdmin:'Вы не администратор. Отправьте этот код владельцу сайта:',block:'Заблокировать водителя',askBlock:'Заблокировать этого водителя? Его будущие поездки будут удалены.',blocked:'Водитель заблокирован.',past:'прошла',refresh:'Обновить',
-pendingN:'Новая заявка',qrT:'Поделитесь с друзьями',qrSub:'Наведите камеру телефона на QR-код — сайт сразу откроется.',qrPrint:'Распечатать',qrShare:'Поделиться ссылкой',copied:'Ссылка скопирована',pastTime:'Это время уже прошло. Выберите будущие дату и время.'}};
+pendingN:'Новая заявка',notaxi:'🚫🚕 Это не такси. Водитель едет по своим делам и только делит расходы на дорогу (бензин) с попутчиками.',fuelHint:'Этот маршрут примерно {km} км. Бензин на всю машину ~{fuel} ₼. Если разделить на {n} человек вместе с вами — ~{per} ₼ с человека.',fuelNote:'Цену указываете вы сами и договариваетесь с пассажиром. Цена должна только покрывать расходы на дорогу.',fuelHigh:'Цена намного выше расходов на дорогу — это может выглядеть как такси.',agree:'Я согласен с правилами и обработкой данных.',rulesL:'Правила',needAgree:'Чтобы продолжить, согласитесь с правилами.',qrT:'Поделитесь с друзьями',qrSub:'Наведите камеру телефона на QR-код — сайт сразу откроется.',qrPrint:'Распечатать',qrShare:'Поделиться ссылкой',copied:'Ссылка скопирована',pastTime:'Это время уже прошло. Выберите будущие дату и время.'}};
 Object.keys(EXTRA).forEach(function(l){Object.keys(EXTRA[l]).forEach(function(k){L[l][k]=EXTRA[l][k]})});
 
 var SB_URL='https://iuqpjveevfurufvedfnf.supabase.co',SB_KEY='sb_publishable_jR3NDpiVgqTGK43HnDO2Xw_NhGxxxap';
 var $=function(i){return document.getElementById(i)},role='drv',me=null,isAdmin=false,sb=null,chatKey=null,adminOn=false,chatSub=null;
-var S={trips:[],bookings:[],msgs:[],reports:[]};
+var S={trips:[],bookings:[],msgs:[],reports:[],plates:{}};
 function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function fillCities(){['from','to'].forEach(function(id,k){var cur=$(id).value||CITIES[k];$(id).innerHTML=CITIES.map(function(c){return '<option value="'+esc(c)+'"'+(c===cur?' selected':'')+'>'+esc(city(c))+'</option>'}).join('')})}
 function setLang(l){
@@ -230,7 +242,7 @@ function setLang(l){
   $('lAz').classList.toggle('on',l==='az');$('lRu').classList.toggle('on',l==='ru');
   document.querySelectorAll('[data-i]').forEach(function(n){n.textContent=T(n.getAttribute('data-i'))});
   document.querySelectorAll('[data-ph]').forEach(function(n){n.placeholder=T(n.getAttribute('data-ph'));n.setAttribute('aria-label',n.placeholder)});
-  fillCities();setRole(role,true);if(chatKey)setChatTitle();if(adminOn)drawAdm();
+  fillCities();setRole(role,true);if(window.fuelHint)fuelHint();if(chatKey)setChatTitle();if(adminOn)drawAdm();
 }
 $('lAz').onclick=function(){setLang('az')};$('lRu').onclick=function(){setLang('ru')};
 (function(){var d=new Date(Date.now()+36e5);d.setMinutes(0,0,0);var p=function(n){return (n<10?'0':'')+n};$('date').value=d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());$('time').value=p(d.getHours())+':00'})();
@@ -252,11 +264,13 @@ function load(){
   if(!sb||!me)return Promise.resolve();
   var since=new Date(Date.now()-6*36e5).toISOString();
   return Promise.all([
-    sb.from('trips').select('*').gte('depart_at',since).order('depart_at'),
+    sb.from('trips').select('id,driver_id,driver_name,car_make,from_city,to_city,depart_at,seats_total,seats_taken,price_azn,created_at').gte('depart_at',since).order('depart_at'),
     sb.from('bookings').select('*')
   ]).then(function(r){
     if(r[0].error)throw r[0].error;if(r[1].error)throw r[1].error;
     S.trips=r[0].data||[];S.bookings=r[1].data||[];refresh();
+    var ids=S.trips.filter(function(t){var b=myBk(t.id);return isAdmin||t.driver_id===me||(b&&b.status==='accepted')}).map(function(t){return t.id});
+    if(ids.length)return sb.rpc('trip_plates',{ids:ids}).then(function(p){(p.data||[]).forEach(function(x){S.plates[x.id]=x.car_plate});refresh()});
   }).catch(function(e){console.error(e)});
 }
 function refresh(){render();if(chatKey)drawChat();if(adminOn)drawAdm()}
@@ -266,7 +280,7 @@ function setRole(r,keep){
   $('tDrv').classList.toggle('on',r==='drv');$('tPas').classList.toggle('on',r==='pas');
   $('fTitle').textContent=T(r==='drv'?'fDrv':'fPas');
   $('go').textContent=T(r==='drv'?'goDrv':'goPas');
-  $('numRow').style.display=$('carRow').style.display=r==='drv'?'':'none';render();
+  $('numRow').style.display=$('carRow').style.display=$('agreeRow').style.display=r==='drv'?'':'none';if(window.fuelHint)fuelHint();render();
 }
 function goForm(r){setRole(r);$('form').scrollIntoView({behavior:'smooth'})}
 $('cDrv').onclick=function(){goForm('drv')};$('cPas').onclick=function(){goForm('pas')};
@@ -296,7 +310,7 @@ function render(){
     }
     var showPlate=own||(b&&b.status==='accepted');
     return '<div class="card trip"><div class="r">'+esc(city(x.from_city))+' → '+esc(city(x.to_city))+'</div><div class="small">'+fmt(x.depart_at)+' · '+T('seatsLeft')+': '+left(x)+' · '+(x.price_azn!=null?x.price_azn+' ₼ · ':'')+T('driver')+': '+esc(x.driver_name)+'</div>'+
-      (x.car_make?'<div class="small">'+T('carL')+': '+esc(x.car_make)+(showPlate&&x.car_plate?', '+T('plateL')+' '+esc(x.car_plate):'')+'</div>':'')+act+
+      (x.car_make?'<div class="small">'+T('carL')+': '+esc(x.car_make)+(showPlate&&(S.plates[x.id]||'')?', '+T('plateL')+' '+esc((S.plates[x.id]||'')):'')+'</div>':'')+act+
       (own?'<div><button class="btn danger" type="button" data-cancel="'+x.id+'">'+T('cancelTrip')+'</button></div></div>':'<div><button class="btn rep" type="button" data-rep="'+x.id+'">'+T('report')+'</button></div></div>')}).join('');
 }
 
@@ -306,6 +320,7 @@ $('go').onclick=function(){
   if($('from').value===$('to').value){say(T('diffCity'));return}
   var dn=$('dname').value.trim(),car=$('car').value.trim(),plate=$('plate').value.trim().toUpperCase();
   if(!dn||!car||!plate){say(T('needCar'));return}
+  if(!$('agree').checked){say(T('needAgree'));return}
   var dt=new Date($('date').value+'T'+($('time').value||'09:00'));
   if(isNaN(dt)){say(T('err'));return}
   if(dt.getTime()<Date.now()-5*6e4){say(T('pastTime'));return}
@@ -323,9 +338,9 @@ $('list').onclick=function(e){
   if(a.cancel){ask(T('askCancel'),function(){sb.from('trips').delete().eq('id',a.cancel).then(function(r){if(r.error)return fail(r.error);closeChat();load()})})}
   else if(a.unbook){ask(T('askUnbook'),function(){sb.from('bookings').delete().eq('id',a.unbook).then(function(r){if(r.error)return fail(r.error);closeChat();load()})})}
   else if(a.book){
-    openDlg('<p>'+T('askName')+'</p><input id="pname" type="text" autocomplete="given-name" placeholder="'+T('namePh')+'" value="'+esc(savedName())+'"><button class="btn p" id="pgo" type="button" style="width:100%">'+T('book')+'</button><button class="btn" id="pcl" type="button" style="width:100%">'+T('cancel')+'</button>');
+    openDlg('<p>'+T('askName')+'</p><input id="pname" type="text" autocomplete="given-name" placeholder="'+T('namePh')+'" value="'+esc(savedName())+'"><label class="agree"><input type="checkbox" id="pagree"'+(agreed()?' checked':'')+'><span>'+T('agree')+' <button class="linkbtn" type="button" data-rules="1">'+T('rulesL')+'</button></span></label><button class="btn p" id="pgo" type="button" style="width:100%">'+T('book')+'</button><button class="btn" id="pcl" type="button" style="width:100%">'+T('cancel')+'</button>');
     $('pcl').onclick=closeDlg;
-    $('pgo').onclick=function(){var n=$('pname').value.trim();if(!n){$('pname').focus();return}try{localStorage.setItem('poputchikName',n)}catch(e){}closeDlg();
+    $('pgo').onclick=function(){var n=$('pname').value.trim();if(!n){$('pname').focus();return}if(!$('pagree').checked){$('pagree').focus();return}setAgreed();try{localStorage.setItem('poputchikName',n)}catch(e){}closeDlg();
       sb.from('bookings').insert({trip_id:a.book,passenger_id:me,passenger_name:n}).then(function(r){if(r.error)return fail(r.error);load()})};
   }
   else if(a.acc||a.dec){sb.from('bookings').update({status:a.acc?'accepted':'declined'}).eq('id',a.acc||a.dec).then(function(r){if(r.error)return fail(r.error);load()})}
@@ -363,7 +378,7 @@ $('cRep').onclick=function(){var o=bkTrip(chatKey);openReport(T('chatL')+': '+$(
 function drawAdm(){
   var trips=S.trips,reps=S.reports,seats=trips.reduce(function(a,x){return a+left(x)},0),o=reps.filter(function(r){return r.status==='open'}).length;
   $('admStats').innerHTML='<div><b>'+trips.length+'</b><span class="small">'+T('stTrips')+'</span></div><div><b>'+seats+'</b><span class="small">'+T('stSeats')+'</span></div><div><b>'+S.bookings.filter(function(b){return b.status==='accepted'}).length+'</b><span class="small">'+T('stChats')+'</span></div>';
-  $('admList').innerHTML='<button class="btn" type="button" data-reload="1" style="width:100%">'+T('refresh')+'</button>'+(trips.map(function(x){return '<div class="card trip"><div class="r">'+esc(city(x.from_city))+' → '+esc(city(x.to_city))+'</div><div class="small">'+fmt(x.depart_at)+' · '+(x.price_azn!=null?x.price_azn+' ₼ · ':'')+esc(x.driver_name)+' · '+esc(x.car_make)+', '+esc(x.car_plate)+'</div><div class="row"><button class="btn danger" type="button" data-del="'+x.id+'">'+T('del')+'</button><button class="btn danger" type="button" data-block="'+x.driver_id+'">'+T('block')+'</button></div></div>'}).join('')||'<div class="empty">'+T('noTrips')+'</div>')+
+  $('admList').innerHTML='<button class="btn" type="button" data-reload="1" style="width:100%">'+T('refresh')+'</button>'+(trips.map(function(x){return '<div class="card trip"><div class="r">'+esc(city(x.from_city))+' → '+esc(city(x.to_city))+'</div><div class="small">'+fmt(x.depart_at)+' · '+(x.price_azn!=null?x.price_azn+' ₼ · ':'')+esc(x.driver_name)+' · '+esc(x.car_make)+', '+esc((S.plates[x.id]||''))+'</div><div class="row"><button class="btn danger" type="button" data-del="'+x.id+'">'+T('del')+'</button><button class="btn danger" type="button" data-block="'+x.driver_id+'">'+T('block')+'</button></div></div>'}).join('')||'<div class="empty">'+T('noTrips')+'</div>')+
   '<h2 style="margin-top:14px">'+T('reps')+' ('+o+' '+T('open')+')</h2>'+(reps.map(function(r){return '<div class="card trip"><div class="r">'+esc(r.reason||'')+'</div><div class="small">'+esc(r.target_label)+(r.details?' · '+esc(r.details):'')+' · '+fmt(r.created_at)+'</div>'+
     (r.status==='open'?'<div class="row"><button class="btn" type="button" data-rc="'+r.id+'">'+T('closeRep')+'</button>'+(r.reported_user_id?'<button class="btn danger" type="button" data-block="'+r.reported_user_id+'">'+T('block')+'</button>':'')+'</div>':'<div class="small">'+T('closed')+'</div>')+'</div>'}).join('')||'<div class="empty">'+T('noReps')+'</div>');
 }
@@ -384,6 +399,27 @@ $('adm').onclick=function(e){var d=e.target.dataset||{};
   if(d.rc)sb.from('reports').update({status:'closed'}).eq('id',d.rc).then(function(r){if(r.error)return fail(r.error);loadAdm()});
 };
 $('admClear').style.display='none';
+
+var RULES={
+az:'<h2>Qaydalar</h2><ol><li><b>Yol yoldaşı taksi deyil</b> və daşıma xidməti göstərmir. Sayt yalnız eyni istiqamətə gedən insanları bir-biri ilə tanış edir.</li><li>Sürücü öz işi ilə gedir və pul qazanmır — sərnişinlərdən yalnız yol xərcinin (benzin) payını alır. Qiyməti sürücü və sərnişin özləri razılaşdırır.</li><li>Səfərə görə sürücü və sərnişin özləri məsuliyyət daşıyır. Sayt gecikməyə, ləğvə və ya zərərə görə cavabdeh deyil.</li><li>Sürücünün etibarlı sürücülük vəsiqəsi, maşının sığortası və texniki baxışı olmalıdır. Yol hərəkəti qaydalarına əməl edin.</li><li>Təhqir, hədə, fırıldaqçılıq və təhlükəli sürmə qadağandır. Şikayət olarsa, administrator istifadəçini bloklaya bilər.</li></ol><h3>Məlumatların emalı</h3><ul><li>Yalnız sizin yazdığınız məlumatları saxlayırıq: ad, marşrut, tarix və saat, maşının markası və nömrəsi, çat mesajları, şikayətlər.</li><li>Bu məlumatlar yalnız səfər tapmaq və təhlükəsizlik üçün istifadə olunur və heç kimə satılmır.</li><li>Maşının nömrəsi yalnız sürücüyə, müraciəti qəbul edilmiş sərnişinə və administratora görünür.</li><li>Məlumatlarınızın silinməsini istəsəniz, WhatsApp ilə yazın: +994 55 848 20 41.</li></ul>',
+ru:'<h2>Правила</h2><ol><li><b>«Попутчик» — не такси</b> и не оказывает услуги перевозки. Сайт только знакомит людей, которые едут в одном направлении.</li><li>Водитель едет по своим делам и не зарабатывает — он берёт с пассажиров только долю расходов на дорогу (бензин). Цену водитель и пассажир согласуют сами.</li><li>За поездку отвечают сами водитель и пассажир. Сайт не отвечает за опоздания, отмены или ущерб.</li><li>У водителя должны быть действующие права, страховка и техосмотр машины. Соблюдайте правила дорожного движения.</li><li>Оскорбления, угрозы, мошенничество и опасное вождение запрещены. По жалобе администратор может заблокировать пользователя.</li></ol><h3>Обработка данных</h3><ul><li>Мы храним только то, что вы сами указали: имя, маршрут, дату и время, марку и номер машины, сообщения в чате, жалобы.</li><li>Эти данные используются только для поиска поездок и безопасности и никому не продаются.</li><li>Номер машины видят только водитель, принятый пассажир и администратор.</li><li>Если хотите удалить свои данные, напишите в WhatsApp: +994 55 848 20 41.</li></ul>'};
+function showRules(){openDlg('<div class="rules">'+RULES[lang]+'</div><button class="btn p" id="rok" type="button" style="width:100%">'+T('ok')+'</button>');$('rok').onclick=closeDlg}
+document.addEventListener('click',function(e){if(e.target.dataset&&e.target.dataset.rules){e.preventDefault();showRules()}});
+function agreed(){try{return localStorage.getItem('poputchikAgree')==='1'}catch(e){return false}}
+function setAgreed(){try{localStorage.setItem('poputchikAgree','1')}catch(e){}}
+$('agree').checked=agreed();$('agree').onchange=function(){if(this.checked)setAgreed()};
+var GEO={'Баку (Bakı)':[40.41,49.87],'Гянджа (Gəncə)':[40.68,46.36],'Сумгаит (Sumqayıt)':[40.59,49.67],'Ленкорань (Lənkəran)':[38.75,48.85],'Шеки (Şəki)':[41.19,47.17],'Мингечевир (Mingəçevir)':[40.77,47.05],'Ширван (Şirvan)':[39.93,48.92],'Ханкенди (Xankəndi)':[39.82,46.76],'Нафталан (Naftalan)':[40.51,46.82],'Губа (Quba)':[41.36,48.51],'Габала (Qəbələ)':[40.98,47.85],'Загатала (Zaqatala)':[41.63,46.64],'Билясувар (Biləsuvar)':[39.46,48.55],'Абшеронский район (Abşeron)':[40.45,49.75],'Хызинский район (Xızı)':[40.91,49.07],'Агсуинский район (Ağsu)':[40.57,48.40],'Исмаиллинский район (İsmayıllı)':[40.79,48.15],'Гобустанский район (Qobustan)':[40.53,48.94],'Шемахинский район (Şamaxı)':[40.63,48.64],'Дашкесанский район (Daşkəsən)':[40.52,46.08],'Геранбойский район (Goranboy)':[40.61,46.79],'Гёйгёльский район (Göygöl)':[40.59,46.32],'Самухский район (Samux)':[40.76,46.41],'Агджабединский район (Ağcabədi)':[40.05,47.46],'Агдамский район (Ağdam)':[39.98,46.93],'Бардинский район (Bərdə)':[40.37,47.13],'Физулинский район (Füzuli)':[39.60,47.14]};
+var FUEL_PRICE=1.15,L_PER_100=8;
+function routeKm(a,b){var p=GEO[a],q=GEO[b];if(!p||!q||a===b)return 0;var r=Math.PI/180,dl=(q[0]-p[0])*r,dn=(q[1]-p[1])*r,h=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(p[0]*r)*Math.cos(q[0]*r)*Math.sin(dn/2)*Math.sin(dn/2);return Math.round(6371*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h))*1.25)}
+function fuelHint(){
+  var box=$('fuel');if(role!=='drv'){box.style.display='none';return}
+  var km=routeKm($('from').value,$('to').value);
+  if(!km){box.style.display='';box.innerHTML=esc(T('fuelNote'));return}
+  var fuel=km*L_PER_100/100*FUEL_PRICE,seats=Math.min(6,Math.max(1,+$('seats').value||1)),n=seats+1,per=fuel/n,price=+$('price').value||0;
+  box.style.display='';
+  box.innerHTML=esc(T('fuelHint').replace('{km}',km).replace('{fuel}',Math.round(fuel)).replace('{n}',n).replace('{per}',Math.max(1,Math.round(per))))+'<br>'+esc(T('fuelNote'))+(price>Math.max(3,per*2)?'<br><span class="warn">'+esc(T('fuelHigh'))+'</span>':'');
+}
+['from','to','seats','price'].forEach(function(id){$(id).addEventListener('input',fuelHint);$(id).addEventListener('change',fuelHint)});
 
 var SITE='https://poputchik-az.netlify.app';
 (function(){var box=$('qrBox');
