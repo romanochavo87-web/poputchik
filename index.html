@@ -91,6 +91,7 @@ footer a{color:var(--acc);font-weight:600}
   <div class="fact"><b data-i="f3t"></b><span class="small" data-i="f3"></span></div>
 </div>
 
+<div class="card small" id="banner" role="status" style="display:none;border-color:#c0392b"></div>
 <h2 data-i="who"></h2>
 <div class="tabs">
   <button class="btn on" id="tDrv" type="button" data-i="tDrv"></button>
@@ -144,6 +145,7 @@ footer a{color:var(--acc);font-weight:600}
 <div id="ov"><div class="card" id="dlgBody" style="width:100%;max-width:420px;margin:0"></div></div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 var L={
 az:{h1:'Şəhərlərarası səfərdə yol yoldaşı tapın',alt:'Попутчик — поездки между городами Азербайджана',
@@ -194,10 +196,20 @@ var CITIES=["Баку (Bakı)","Гянджа (Gəncə)","Сумгаит (Sumqay�
 var lang='az';try{var sl=localStorage.getItem('poputchikLang');if(sl==='ru'||sl==='az')lang=sl}catch(e){}
 function T(k){return L[lang][k]||k}
 function city(c){var m=/^(.*) \(([^)]+)\)$/.exec(c||'');if(!m)return c;return lang==='az'?(m[1].indexOf('район')>-1?m[2]+' rayonu':m[2]):m[1]}
-var $=function(i){return document.getElementById(i)},role='drv',me='local',db=null,chatKey=null,adminOn=false;
-var S={trips:{},chats:{},reports:{}},ADMIN_PIN='1234';
-function fillCities(){['from','to'].forEach(function(id,k){var cur=$(id).value||CITIES[k];$(id).innerHTML=CITIES.map(function(c){return '<option value="'+c+'"'+(c===cur?' selected':'')+'>'+esc(city(c))+'</option>'}).join('')})}
-function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+var EXTRA={
+az:{loading:'Yüklənir…',authErr:'Server ilə əlaqə qurulmadı. Bir az sonra səhifəni yeniləyin.',askName:'Adınızı yazın ki, sürücü kimin müraciət etdiyini bilsin',namePh:'Adınız',err:'Xəta baş verdi. Yenidən cəhd edin.',seatsLeft:'boş yer',
+notAdmin:'Siz administrator deyilsiniz. Bu kodu sayt sahibinə göndərin:',block:'Sürücünü blokla',askBlock:'Bu sürücü bloklansın? Onun gələcək səfərləri silinəcək.',blocked:'Sürücü bloklandı.',past:'keçmiş',refresh:'Yenilə',
+pendingN:'Yeni müraciət',pastTime:'Bu vaxt artıq keçib. Gələcək tarix və saat seçin.'},
+ru:{loading:'Загрузка…',authErr:'Не удалось связаться с сервером. Обновите страницу чуть позже.',askName:'Напишите ваше имя, чтобы водитель знал, кто отправил заявку',namePh:'Ваше имя',err:'Произошла ошибка. Попробуйте ещё раз.',seatsLeft:'свободно мест',
+notAdmin:'Вы не администратор. Отправьте этот код владельцу сайта:',block:'Заблокировать водителя',askBlock:'Заблокировать этого водителя? Его будущие поездки будут удалены.',blocked:'Водитель заблокирован.',past:'прошла',refresh:'Обновить',
+pendingN:'Новая заявка',pastTime:'Это время уже прошло. Выберите будущие дату и время.'}};
+Object.keys(EXTRA).forEach(function(l){Object.keys(EXTRA[l]).forEach(function(k){L[l][k]=EXTRA[l][k]})});
+
+var SB_URL='https://iuqpjveevfurufvedfnf.supabase.co',SB_KEY='sb_publishable_jR3NDpiVgqTGK43HnDO2Xw_NhGxxxap';
+var $=function(i){return document.getElementById(i)},role='drv',me=null,isAdmin=false,sb=null,chatKey=null,adminOn=false,chatSub=null;
+var S={trips:[],bookings:[],msgs:[],reports:[]};
+function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function fillCities(){['from','to'].forEach(function(id,k){var cur=$(id).value||CITIES[k];$(id).innerHTML=CITIES.map(function(c){return '<option value="'+esc(c)+'"'+(c===cur?' selected':'')+'>'+esc(city(c))+'</option>'}).join('')})}
 function setLang(l){
   lang=l;try{localStorage.setItem('poputchikLang',l)}catch(e){}
   document.documentElement.lang=l;
@@ -207,21 +219,36 @@ function setLang(l){
   fillCities();setRole(role,true);if(chatKey)setChatTitle();if(adminOn)drawAdm();
 }
 $('lAz').onclick=function(){setLang('az')};$('lRu').onclick=function(){setLang('ru')};
-$('date').value=new Date().toISOString().slice(0,10);
+(function(){var d=new Date(Date.now()+36e5);d.setMinutes(0,0,0);var p=function(n){return (n<10?'0':'')+n};$('date').value=d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());$('time').value=p(d.getHours())+':00'})();
 function say(m){openDlg('<p>'+esc(m)+'</p><button class="btn p" id="okb" type="button" style="width:100%">'+T('ok')+'</button>');$('okb').onclick=closeDlg}
 function ask(m,fn){openDlg('<p>'+esc(m)+'</p><div class="row"><button class="btn danger" id="yes" type="button">'+T('yes')+'</button><button class="btn" id="no" type="button">'+T('no')+'</button></div>');$('no').onclick=closeDlg;$('yes').onclick=function(){closeDlg();fn()}}
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
-try{var ls=JSON.parse(localStorage.getItem('poputchik2')||'null');if(ls)S=ls}catch(e){}
-function put(c,id){
-  if(db){db.collection(c).doc(id).set(JSON.parse(JSON.stringify(S[c][id]))).catch(function(){say(T('saveErr'))})}
-  else{try{localStorage.setItem('poputchik2',JSON.stringify(S))}catch(e){}}
-  refresh();
+function openDlg(h){$('dlgBody').innerHTML=h;$('ov').style.display='flex'}
+function closeDlg(){$('ov').style.display='none'}
+$('ov').onclick=function(e){if(e.target===$('ov'))closeDlg()};
+function banner(m){$('banner').style.display=m?'':'none';$('banner').textContent=m||''}
+function fail(e){console.error(e);var msg=e&&e.message||'';say(msg.indexOf('NO_SEATS')>-1?T('noSeats'):T('err'))}
+function ready(){if(!sb||!me){say(T('authErr'));return false}return true}
+
+function fmt(iso){var d=new Date(iso);var p=function(n){return (n<10?'0':'')+n};return p(d.getDate())+'.'+p(d.getMonth()+1)+'.'+d.getFullYear()+', '+p(d.getHours())+':'+p(d.getMinutes())}
+function left(x){return Math.max(0,x.seats_total-x.seats_taken)}
+function myBk(tid){return S.bookings.find(function(b){return b.trip_id===tid&&b.passenger_id===me})}
+function tripBks(tid){return S.bookings.filter(function(b){return b.trip_id===tid}).sort(function(a,b){return a.created_at<b.created_at?-1:1})}
+
+function load(){
+  if(!sb||!me)return Promise.resolve();
+  var since=new Date(Date.now()-6*36e5).toISOString();
+  return Promise.all([
+    sb.from('trips').select('*').gte('depart_at',since).order('depart_at'),
+    sb.from('bookings').select('*')
+  ]).then(function(r){
+    if(r[0].error)throw r[0].error;if(r[1].error)throw r[1].error;
+    S.trips=r[0].data||[];S.bookings=r[1].data||[];refresh();
+  }).catch(function(e){console.error(e)});
 }
-function del(c,id){delete S[c][id];if(db)db.collection(c).doc(id).delete().catch(function(){});else try{localStorage.setItem('poputchik2',JSON.stringify(S))}catch(e){};refresh()}
-function arr(c){return Object.keys(S[c]).map(function(k){var o=S[c][k];o.id=k;return o}).sort(function(a,b){return (b.ts||0)-(a.ts||0)})}
 function refresh(){render();if(chatKey)drawChat();if(adminOn)drawAdm()}
+
 function setRole(r,keep){
-  role=r;if(!keep){chatKey=null;$('chat').style.display='none'}
+  role=r;if(!keep)closeChat();
   $('tDrv').classList.toggle('on',r==='drv');$('tPas').classList.toggle('on',r==='pas');
   $('fTitle').textContent=T(r==='drv'?'fDrv':'fPas');
   $('go').textContent=T(r==='drv'?'goDrv':'goPas');
@@ -229,78 +256,137 @@ function setRole(r,keep){
 }
 function goForm(r){setRole(r);$('form').scrollIntoView({behavior:'smooth'})}
 $('cDrv').onclick=function(){goForm('drv')};$('cPas').onclick=function(){goForm('pas')};
-function render(){
-  var f=$('from').value,t=$('to').value,list=arr('trips');
-  if(role==='pas')list=list.filter(function(x){return x.from===f&&x.to===t});
-  else list=list.filter(function(x){return x.owner===me});
-  if(!list.length){$('list').innerHTML='<div class="card empty">'+T(role==='pas'?'emptyPas':'emptyDrv')+'</div>';return}
-  $('list').innerHTML=list.map(function(x){
-    var bks=x.bks||{},act='',own=x.owner===me,b=bks[me];
-    if(role==='pas'){
-      if(!b)act=x.seats>0?'<button class="btn p" type="button" data-book="'+x.id+'">'+T('book')+'</button>':'<div class="small">'+T('noSeats')+'</div>';
-      else if(b.st==='pending')act='<div class="small">'+T('pending')+'</div>';
-      else if(b.st==='accepted')act='<button class="btn p" type="button" data-chat="'+x.id+'_'+me+'">'+T('chatDrv')+'</button>';
-      else act='<div class="small">'+T('declinedP')+'</div>';
-      if(b)act+='<button class="btn" type="button" data-unbook="'+x.id+'">'+T('unbook')+'</button>';
-    }else{
-      var ks=Object.keys(bks);
-      act=ks.length?ks.map(function(k,i){var q=bks[k];return '<div class="small" style="margin-top:8px">'+T('pas')+' '+(i+1)+(q.name?' ('+esc(q.name)+')':'')+'</div>'+
-        (q.st==='pending'?'<div class="row"><button class="btn p" type="button" data-acc="'+x.id+'|'+k+'">'+T('acc')+'</button><button class="btn" type="button" data-dec="'+x.id+'|'+k+'">'+T('dec')+'</button></div>':
-        q.st==='accepted'?'<button class="btn p" type="button" data-chat="'+x.id+'_'+k+'">'+T('openChat')+'</button>':'<div class="small">'+T('declined')+'</div>')}).join(''):'<div class="small">'+T('noReq')+'</div>';
-    }
-    return '<div class="card trip"><div class="r">'+esc(city(x.from))+' → '+esc(city(x.to))+'</div><div class="small">'+esc(x.date)+', '+esc(x.time)+' · '+T('seatsN')+': '+x.seats+' · '+x.price+' ₼ · '+T('driver')+': '+esc(x.driver)+'</div>'+(x.car?'<div class="small">'+T('carL')+': '+esc(x.car)+((own||(b&&b.st==='accepted'))&&x.plate?', '+T('plateL')+' '+esc(x.plate):'')+'</div>':'')+act+(role==='drv'&&own?'<div><button class="btn danger" type="button" data-cancel="'+x.id+'">'+T('cancelTrip')+'</button></div></div>':'<div><button class="btn rep" type="button" data-rep="'+x.id+'">'+T('report')+'</button></div></div>')}).join('');
-}
 $('tDrv').onclick=function(){setRole('drv')};$('tPas').onclick=function(){setRole('pas')};
 $('from').onchange=$('to').onchange=function(){if(role==='pas')render()};
+
+function render(){
+  if(!sb||!me){$('list').innerHTML='<div class="card empty">'+T('loading')+'</div>';return}
+  var f=$('from').value,t=$('to').value,now=Date.now(),list;
+  if(role==='pas')list=S.trips.filter(function(x){return x.from_city===f&&x.to_city===t&&new Date(x.depart_at).getTime()>now-36e5});
+  else list=S.trips.filter(function(x){return x.driver_id===me});
+  if(!list.length){$('list').innerHTML='<div class="card empty">'+T(role==='pas'?'emptyPas':'emptyDrv')+'</div>';return}
+  $('list').innerHTML=list.map(function(x){
+    var own=x.driver_id===me,b=myBk(x.id),act='';
+    if(role==='pas'){
+      if(own)act='';
+      else if(!b)act=left(x)>0?'<button class="btn p" type="button" data-book="'+x.id+'">'+T('book')+'</button>':'<div class="small">'+T('noSeats')+'</div>';
+      else if(b.status==='pending')act='<div class="small">'+T('pending')+'</div>';
+      else if(b.status==='accepted')act='<button class="btn p" type="button" data-chat="'+b.id+'">'+T('chatDrv')+'</button>';
+      else act='<div class="small">'+T('declinedP')+'</div>';
+      if(b)act+='<button class="btn" type="button" data-unbook="'+b.id+'">'+T('unbook')+'</button>';
+    }else{
+      var ks=tripBks(x.id);
+      act=ks.length?ks.map(function(q,i){return '<div class="small" style="margin-top:8px">'+T('pas')+' '+(i+1)+(q.passenger_name?' ('+esc(q.passenger_name)+')':'')+'</div>'+
+        (q.status==='pending'?'<div class="row"><button class="btn p" type="button" data-acc="'+q.id+'">'+T('acc')+'</button><button class="btn" type="button" data-dec="'+q.id+'">'+T('dec')+'</button></div>':
+        q.status==='accepted'?'<button class="btn p" type="button" data-chat="'+q.id+'">'+T('openChat')+'</button>':'<div class="small">'+T('declined')+'</div>')}).join(''):'<div class="small">'+T('noReq')+'</div>';
+    }
+    var showPlate=own||(b&&b.status==='accepted');
+    return '<div class="card trip"><div class="r">'+esc(city(x.from_city))+' → '+esc(city(x.to_city))+'</div><div class="small">'+fmt(x.depart_at)+' · '+T('seatsLeft')+': '+left(x)+' · '+(x.price_azn!=null?x.price_azn+' ₼ · ':'')+T('driver')+': '+esc(x.driver_name)+'</div>'+
+      (x.car_make?'<div class="small">'+T('carL')+': '+esc(x.car_make)+(showPlate&&x.car_plate?', '+T('plateL')+' '+esc(x.car_plate):'')+'</div>':'')+act+
+      (own?'<div><button class="btn danger" type="button" data-cancel="'+x.id+'">'+T('cancelTrip')+'</button></div></div>':'<div><button class="btn rep" type="button" data-rep="'+x.id+'">'+T('report')+'</button></div></div>')}).join('');
+}
+
 $('go').onclick=function(){
   if(role==='pas'){render();$('list').scrollIntoView({behavior:'smooth'});return}
+  if(!ready())return;
   if($('from').value===$('to').value){say(T('diffCity'));return}
   var dn=$('dname').value.trim(),car=$('car').value.trim(),plate=$('plate').value.trim().toUpperCase();
   if(!dn||!car||!plate){say(T('needCar'));return}
-  var id=uid();S.trips[id]={ts:Date.now(),from:$('from').value,to:$('to').value,date:$('date').value,time:$('time').value,seats:+$('seats').value||1,price:+$('price').value||0,driver:dn,car:car,plate:plate,owner:me,bks:{}};
-  put('trips',id);
+  var dt=new Date($('date').value+'T'+($('time').value||'09:00'));
+  if(isNaN(dt)){say(T('err'));return}
+  if(dt.getTime()<Date.now()-5*6e4){say(T('pastTime'));return}
+  try{localStorage.setItem('poputchikName',dn)}catch(e){}
+  $('go').disabled=true;
+  sb.from('trips').insert({driver_id:me,driver_name:dn,car_make:car,car_plate:plate,from_city:$('from').value,to_city:$('to').value,depart_at:dt.toISOString(),seats_total:Math.min(6,Math.max(1,+$('seats').value||1)),price_azn:Math.max(0,+$('price').value||0)})
+    .then(function(r){$('go').disabled=false;if(r.error)return fail(r.error);load().then(function(){$('list').scrollIntoView({behavior:'smooth'})})});
 };
-function setChatTitle(){var tid=chatKey.split('_')[0],x=S.trips[tid];$('cTitle').textContent=(role==='pas'?T('chatWithDrv')+': '+(x?x.driver:''):T('chatWithPas'))+(x?' · '+city(x.from)+' → '+city(x.to):'')}
+
+function savedName(){try{return localStorage.getItem('poputchikName')||''}catch(e){return ''}}
 $('list').onclick=function(e){
   var a=e.target.dataset||{};
-  if(a.cancel){var cid=a.cancel;ask(T('askCancel'),function(){Object.keys(S.chats).forEach(function(k){if(k.indexOf(cid+'_')===0)del('chats',k)});del('trips',cid);chatKey=null;$('chat').style.display='none'})}
-  else if(a.unbook){var tid=a.unbook;ask(T('askUnbook'),function(){var x=S.trips[tid];if(!x||!x.bks||!x.bks[me])return;if(x.bks[me].st==='accepted')x.seats++;delete x.bks[me];del('chats',tid+'_'+me);chatKey=null;$('chat').style.display='none';put('trips',tid)})}
-  else if(a.book){var x=S.trips[a.book];if(!x)return;x.bks=x.bks||{};if(x.bks[me])return;x.bks[me]={st:'pending',name:''};put('trips',a.book)}
-  else if(a.acc||a.dec){var p=(a.acc||a.dec).split('|'),x=S.trips[p[0]];if(!x||!x.bks||!x.bks[p[1]])return;
-    if(a.acc){if(x.seats<1){say(T('noSeats'));return}x.bks[p[1]].st='accepted';x.seats--}else x.bks[p[1]].st='declined';put('trips',p[0])}
-  else if(a.chat){chatKey=a.chat;setChatTitle();$('chat').style.display='';drawChat();$('chat').scrollIntoView({behavior:'smooth'})}
-  else if(a.rep){var x=S.trips[a.rep];if(x)openReport(T('trip')+' '+city(x.from)+' → '+city(x.to)+', '+T('driver')+' '+x.driver)}
+  if(!a.cancel&&!a.unbook&&!a.book&&!a.acc&&!a.dec&&!a.chat&&!a.rep)return;
+  if(!ready())return;
+  if(a.cancel){ask(T('askCancel'),function(){sb.from('trips').delete().eq('id',a.cancel).then(function(r){if(r.error)return fail(r.error);closeChat();load()})})}
+  else if(a.unbook){ask(T('askUnbook'),function(){sb.from('bookings').delete().eq('id',a.unbook).then(function(r){if(r.error)return fail(r.error);closeChat();load()})})}
+  else if(a.book){
+    openDlg('<p>'+T('askName')+'</p><input id="pname" type="text" autocomplete="given-name" placeholder="'+T('namePh')+'" value="'+esc(savedName())+'"><button class="btn p" id="pgo" type="button" style="width:100%">'+T('book')+'</button><button class="btn" id="pcl" type="button" style="width:100%">'+T('cancel')+'</button>');
+    $('pcl').onclick=closeDlg;
+    $('pgo').onclick=function(){var n=$('pname').value.trim();if(!n){$('pname').focus();return}try{localStorage.setItem('poputchikName',n)}catch(e){}closeDlg();
+      sb.from('bookings').insert({trip_id:a.book,passenger_id:me,passenger_name:n}).then(function(r){if(r.error)return fail(r.error);load()})};
+  }
+  else if(a.acc||a.dec){sb.from('bookings').update({status:a.acc?'accepted':'declined'}).eq('id',a.acc||a.dec).then(function(r){if(r.error)return fail(r.error);load()})}
+  else if(a.chat){openChat(a.chat)}
+  else if(a.rep){var x=S.trips.find(function(t){return t.id===a.rep});if(x)openReport(T('trip')+' '+city(x.from_city)+' → '+city(x.to_city)+', '+T('driver')+' '+x.driver_name,x)}
 };
-function drawChat(){var m=(S.chats[chatKey]||{}).m||[];$('msgs').innerHTML=m.map(function(x){return '<div class="msg'+(x.by===me?' me':'')+'">'+esc(x.t)+'</div>'}).join('')||'<div class="small">'+T('chatEmpty')+'</div>';$('msgs').scrollTop=1e6}
-$('send').onclick=function(){var v=$('cin').value.trim();if(!v||!chatKey)return;var c=S.chats[chatKey]=S.chats[chatKey]||{m:[]};c.m=(c.m||[]).concat([{by:me,t:v}]);$('cin').value='';put('chats',chatKey)};
+
+function bkTrip(bid){var b=S.bookings.find(function(q){return q.id===bid});return {b:b,t:b&&S.trips.find(function(t){return t.id===b.trip_id})}}
+function setChatTitle(){var o=bkTrip(chatKey),x=o.t,isDrv=x&&x.driver_id===me;$('cTitle').textContent=(isDrv?T('chatWithPas')+(o.b&&o.b.passenger_name?': '+o.b.passenger_name:''):T('chatWithDrv')+': '+(x?x.driver_name:''))+(x?' · '+city(x.from_city)+' → '+city(x.to_city):'')}
+function openChat(bid){
+  closeChat();chatKey=bid;S.msgs=[];setChatTitle();$('chat').style.display='';drawChat();$('chat').scrollIntoView({behavior:'smooth'});
+  loadMsgs();
+  chatSub=sb.channel('chat-'+bid).on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'booking_id=eq.'+bid},function(p){if(chatKey===bid&&!S.msgs.some(function(m){return m.id===p.new.id})){S.msgs.push(p.new);drawChat()}}).subscribe();
+}
+function loadMsgs(){var bid=chatKey;if(!bid)return;sb.from('messages').select('*').eq('booking_id',bid).order('created_at').then(function(r){if(chatKey!==bid)return;if(r.error)return console.error(r.error);S.msgs=r.data||[];drawChat()})}
+function closeChat(){chatKey=null;$('chat').style.display='none';if(chatSub&&sb){sb.removeChannel(chatSub)}chatSub=null}
+function drawChat(){$('msgs').innerHTML=S.msgs.map(function(x){return '<div class="msg'+(x.sender_id===me?' me':'')+'">'+esc(x.body)+'</div>'}).join('')||'<div class="small">'+T('chatEmpty')+'</div>';$('msgs').scrollTop=1e6}
+$('send').onclick=function(){var v=$('cin').value.trim().slice(0,1000);if(!v||!chatKey||!ready())return;$('cin').value='';
+  sb.from('messages').insert({booking_id:chatKey,sender_id:me,body:v}).select().single().then(function(r){if(r.error){$('cin').value=v;return fail(r.error)}if(!S.msgs.some(function(m){return m.id===r.data.id})){S.msgs.push(r.data);drawChat()}})};
 $('cin').onkeydown=function(e){if(e.key==='Enter')$('send').click()};
-function openDlg(h){$('dlgBody').innerHTML=h;$('ov').style.display='flex'}
-function closeDlg(){$('ov').style.display='none'}
-$('ov').onclick=function(e){if(e.target===$('ov'))closeDlg()};
-function openReport(target){
+
+function openReport(target,trip){
+  if(!ready())return;
   openDlg('<h2>'+T('report')+'</h2><p class="small">'+esc(target)+'</p><label for="rr">'+T('reason')+'</label><select id="rr">'+['r1','r2','r3','r4','r5'].map(function(k){return '<option>'+T(k)+'</option>'}).join('')+'</select><label for="rt">'+T('details')+'</label><input id="rt" type="text" placeholder="'+T('detailsPh')+'"><button class="btn p" id="rsend" type="button" style="width:100%">'+T('sendRep')+'</button><button class="btn" id="rcl" type="button" style="width:100%">'+T('cancel')+'</button>');
   $('rcl').onclick=closeDlg;
-  $('rsend').onclick=function(){var id=uid();S.reports[id]={ts:Date.now(),reason:$('rr').value,target:target,text:$('rt').value.trim(),at:new Date().toLocaleString(lang==='az'?'az-AZ':'ru-RU'),open:true};put('reports',id);
-    openDlg('<h2>'+T('repSent')+'</h2><p>'+T('repSent2')+'</p><button class="btn p" id="ok" type="button" style="width:100%">'+T('close')+'</button>');$('ok').onclick=closeDlg};
+  $('rsend').onclick=function(){
+    var row={reporter_id:me,reason:$('rr').value,target_label:target,details:$('rt').value.trim()||null};
+    if(trip){row.trip_id=trip.id;if(trip.driver_id!==me)row.reported_user_id=trip.driver_id}
+    sb.from('reports').insert(row).then(function(r){if(r.error)return fail(r.error);
+      openDlg('<h2>'+T('repSent')+'</h2><p>'+T('repSent2')+'</p><button class="btn p" id="ok" type="button" style="width:100%">'+T('close')+'</button>');$('ok').onclick=closeDlg})};
 }
 $('sos').onclick=function(){openReport(T('general'))};
-$('cRep').onclick=function(){openReport(T('chatL')+': '+$('cTitle').textContent)};
+$('cRep').onclick=function(){var o=bkTrip(chatKey);openReport(T('chatL')+': '+$('cTitle').textContent,o.t)};
+
 function drawAdm(){
-  var trips=arr('trips'),reps=arr('reports'),seats=trips.reduce(function(a,x){return a+(+x.seats||0)},0),o=reps.filter(function(r){return r.open}).length;
-  $('admStats').innerHTML='<div><b>'+trips.length+'</b><span class="small">'+T('stTrips')+'</span></div><div><b>'+seats+'</b><span class="small">'+T('stSeats')+'</span></div><div><b>'+Object.keys(S.chats).length+'</b><span class="small">'+T('stChats')+'</span></div>';
-  $('admList').innerHTML=(trips.map(function(x){return '<div class="card trip"><div class="r">'+esc(city(x.from))+' → '+esc(city(x.to))+'</div><div class="small">'+esc(x.date)+', '+esc(x.time)+' · '+x.price+' ₼ · '+esc(x.driver)+(x.car?' · '+esc(x.car)+(x.plate?', '+esc(x.plate):''):'')+'</div><button class="btn danger" type="button" data-del="'+x.id+'">'+T('del')+'</button></div>'}).join('')||'<div class="empty">'+T('noTrips')+'</div>')+
-  '<h2 style="margin-top:14px">'+T('reps')+' ('+o+' '+T('open')+')</h2>'+(reps.map(function(r){return '<div class="card trip"><div class="r">'+esc(r.reason||'')+'</div><div class="small">'+esc(r.target)+(r.text?' · '+esc(r.text):'')+' · '+esc(r.at)+'</div>'+(r.open?'<button class="btn" type="button" data-rc="'+r.id+'">'+T('closeRep')+'</button>':'<div class="small">'+T('closed')+'</div>')+'</div>'}).join('')||'<div class="empty">'+T('noReps')+'</div>');
+  var trips=S.trips,reps=S.reports,seats=trips.reduce(function(a,x){return a+left(x)},0),o=reps.filter(function(r){return r.status==='open'}).length;
+  $('admStats').innerHTML='<div><b>'+trips.length+'</b><span class="small">'+T('stTrips')+'</span></div><div><b>'+seats+'</b><span class="small">'+T('stSeats')+'</span></div><div><b>'+S.bookings.filter(function(b){return b.status==='accepted'}).length+'</b><span class="small">'+T('stChats')+'</span></div>';
+  $('admList').innerHTML='<button class="btn" type="button" data-reload="1" style="width:100%">'+T('refresh')+'</button>'+(trips.map(function(x){return '<div class="card trip"><div class="r">'+esc(city(x.from_city))+' → '+esc(city(x.to_city))+'</div><div class="small">'+fmt(x.depart_at)+' · '+(x.price_azn!=null?x.price_azn+' ₼ · ':'')+esc(x.driver_name)+' · '+esc(x.car_make)+', '+esc(x.car_plate)+'</div><div class="row"><button class="btn danger" type="button" data-del="'+x.id+'">'+T('del')+'</button><button class="btn danger" type="button" data-block="'+x.driver_id+'">'+T('block')+'</button></div></div>'}).join('')||'<div class="empty">'+T('noTrips')+'</div>')+
+  '<h2 style="margin-top:14px">'+T('reps')+' ('+o+' '+T('open')+')</h2>'+(reps.map(function(r){return '<div class="card trip"><div class="r">'+esc(r.reason||'')+'</div><div class="small">'+esc(r.target_label)+(r.details?' · '+esc(r.details):'')+' · '+fmt(r.created_at)+'</div>'+
+    (r.status==='open'?'<div class="row"><button class="btn" type="button" data-rc="'+r.id+'">'+T('closeRep')+'</button>'+(r.reported_user_id?'<button class="btn danger" type="button" data-block="'+r.reported_user_id+'">'+T('block')+'</button>':'')+'</div>':'<div class="small">'+T('closed')+'</div>')+'</div>'}).join('')||'<div class="empty">'+T('noReps')+'</div>');
+}
+function loadAdm(){
+  var since=new Date(Date.now()-6*36e5).toISOString();
+  return Promise.all([load(),sb.from('reports').select('*').order('created_at',{ascending:false}).limit(200)]).then(function(r){if(r[1].error)return fail(r[1].error);S.reports=r[1].data||[];drawAdm()});
 }
 $('admBtn').onclick=function(){
+  if(!ready())return;
   if(adminOn){adminOn=false;$('adm').style.display='none';return}
-  openDlg('<h2>'+T('pinT')+'</h2><input id="pin" type="password" inputmode="numeric" aria-label="'+T('pinT')+'"><button class="btn p" id="pok" type="button" style="width:100%">'+T('login')+'</button>');
-  $('pok').onclick=function(){if($('pin').value!==ADMIN_PIN){$('pin').value='';$('pin').placeholder=T('wrong');return}closeDlg();adminOn=true;$('adm').style.display='';drawAdm();$('adm').scrollIntoView({behavior:'smooth'})};
+  if(!isAdmin){openDlg('<p>'+T('notAdmin')+'</p><input id="myid" type="text" readonly value="'+esc(me)+'" style="font-size:13px"><button class="btn p" id="okb" type="button" style="width:100%">'+T('ok')+'</button>');$('myid').onclick=function(){this.select()};$('okb').onclick=closeDlg;return}
+  adminOn=true;$('adm').style.display='';loadAdm();$('adm').scrollIntoView({behavior:'smooth'});
 };
 $('adm').onclick=function(e){var d=e.target.dataset||{};
-  if(d.del){Object.keys(S.chats).forEach(function(k){if(k.indexOf(d.del+'_')===0)del('chats',k)});del('trips',d.del)}
-  if(d.rc&&S.reports[d.rc]){S.reports[d.rc].open=false;put('reports',d.rc)}};
-$('admClear').onclick=function(){ask(T('askClear'),function(){['trips','chats'].forEach(function(c){Object.keys(S[c]).forEach(function(k){del(c,k)})});chatKey=null;$('chat').style.display='none'})};
+  if(d.reload)loadAdm();
+  if(d.del)ask(T('askCancel'),function(){sb.from('trips').delete().eq('id',d.del).then(function(r){if(r.error)return fail(r.error);loadAdm()})});
+  if(d.block)ask(T('askBlock'),function(){sb.rpc('admin_set_blocked',{target:d.block,blocked:true}).then(function(r){if(r.error)return fail(r.error);say(T('blocked'));loadAdm()})});
+  if(d.rc)sb.from('reports').update({status:'closed'}).eq('id',d.rc).then(function(r){if(r.error)return fail(r.error);loadAdm()});
+};
+$('admClear').style.display='none';
+
 setLang(lang);
+$('dname').value=savedName();
+(function init(){
+  if(!window.supabase){banner(T('authErr'));return}
+  sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+  sb.auth.getSession().then(function(r){
+    var s=r.data&&r.data.session;
+    return s?s:sb.auth.signInAnonymously().then(function(x){if(x.error)throw x.error;return x.data.session});
+  }).then(function(s){
+    me=s.user.id;banner('');
+    sb.from('profiles').select('role').eq('id',me).maybeSingle().then(function(r){isAdmin=!!(r.data&&r.data.role==='admin')});
+    load();
+    sb.channel('live').on('postgres_changes',{event:'*',schema:'public',table:'trips'},function(){load()}).on('postgres_changes',{event:'*',schema:'public',table:'bookings'},function(){load()}).subscribe();
+    document.addEventListener('visibilitychange',function(){if(!document.hidden){load();if(chatKey)loadMsgs()}});
+  }).catch(function(e){console.error(e);banner(T('authErr'));render()});
+})();
 </script>
 </body>
 </html>
