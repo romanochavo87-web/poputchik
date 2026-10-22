@@ -98,6 +98,7 @@ function apply(){
 document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{lang=b.dataset.l;try{localStorage.setItem("lang",lang)}catch(e){};apply();});
 apply();
 
+const TG_INTENT="intent://resolve?domain="+BOT+"#Intent;scheme=tg;package=org.telegram.messenger;S.browser_fallback_url="+encodeURIComponent(HTTPS)+";end";
 if(inApp){
   document.getElementById("inapp").style.display="block";
   document.getElementById("arrow").style.display="block";
@@ -105,7 +106,15 @@ if(inApp){
     const c=document.getElementById("chrome");
     c.href="intent://"+location.host+location.pathname+"#Intent;scheme=https;package=com.android.chrome;end";
     c.style.display="block";
+    document.getElementById("open").href=TG_INTENT;
+    // Android: try to jump straight into the Telegram app
+    setTimeout(()=>{ location.href=TG_INTENT; },300);
   }
+} else {
+  // Normal browser (Safari / Chrome): go straight to Telegram
+  const t=Date.now();
+  setTimeout(()=>{ location.href=TG; },200);
+  setTimeout(()=>{ if(!document.hidden && Date.now()-t<3000) location.href=HTTPS; },1600);
 }
 // Open button: try the app first, fall back to the web link
 document.getElementById("open").addEventListener("click",e=>{
