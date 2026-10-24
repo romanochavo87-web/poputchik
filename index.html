@@ -7,6 +7,11 @@
 <title>Yol yoldaşı · Попутчик — şəhərlərarası birgə səfərlər</title>
 <meta name="description" content="Başqa şəhərə maşınla gedirsiniz? Boş yerləri yol yoldaşlarına təklif edin və benzin xərcini bölüşün. Едете в другой город? Найдите попутчиков и разделите расходы на бензин.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://poputchik-az.netlify.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://poputchik-az.netlify.app/">
+<meta name="twitter:card" content="summary_large_image">
 <meta property="og:title" content="Yol yoldaşı — Azərbaycanda şəhərlərarası birgə səfərlər">
 <meta property="og:description" content="Sürücülər boş yerləri təklif edir, sərnişinlər yol yoldaşı tapır. Benzin xərcini bölüşün — avtobusdan rahat, taksidən ucuz.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9A%97%3C/text%3E%3C/svg%3E">
@@ -44,7 +49,7 @@ select,input{width:100%;font:inherit;padding:11px;border:1px solid var(--line);b
 .tabs{display:flex;gap:8px;margin-bottom:12px}.tabs .btn{flex:1;margin:0}
 .tabs .on{background:var(--acc);color:var(--accink);border-color:var(--acc)}
 .trip .r{font-weight:700}.small{font-size:13px;color:var(--mute)}
-.empty{color:var(--mute);text-align:center;padding:14px}
+.empty{color:var(--mute);text-align:center;padding:14px}.empty b{color:var(--ink)}.empty .wa{display:inline-block;text-decoration:none;margin-top:12px}
 #msgs{min-height:90px;max-height:240px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px}
 .msg{padding:8px 10px;border-radius:9px;background:var(--bg);margin-bottom:7px;max-width:85%}
 .msg.me{background:var(--me);margin-left:auto;text-align:right}
@@ -186,7 +191,7 @@ who:'Siz kimsiniz?',tDrv:'Mən sürücüyəm',tPas:'Mən sərnişinəm',fDrv:'S�
 from:'Haradan',to:'Haraya',date:'Tarix',time:'Saat',dname:'Sürücünün adı',dnamePh:'Adınız',car:'Maşının markası',carPh:'Məsələn, Toyota Camry',plate:'Maşının nömrəsi',seats:'Boş yer',price:'Bir yerin qiyməti, ₼',
 report:'Şikayət et',msg:'Mesaj',send:'Göndər',admT:'Admin paneli',admClear:'Bütün səfərləri və çatları sil',admBtn:'Administrator girişi',sos:'Adminə şikayət',
 foot:'Yol yoldaşı — Azərbaycanda şəhərlərarası birgə səfərlər. Sınaq versiyası.',q:'Sualınız var?',
-ok:'OK',yes:'Bəli',no:'Xeyr',emptyPas:'Bu istiqamətdə hələ səfər yoxdur. Başqa istiqamət seçin.',emptyDrv:'Hələ səfəriniz yoxdur. İlk səfəri yerləşdirin.',
+ok:'OK',yes:'Bəli',no:'Xeyr',emptyPas:'Bu istiqamətdə hələ səfər yoxdur.',waneed:'Sorğu buraxın — sürücü tapılan kimi WhatsApp-da xəbər verəcəyik.',wabtn:'WhatsApp-da sorğu göndər',wamsg:'Salam! Yol yoldaşı axtarıram: ',wadate:'Tarix: ',emptyDrv:'Hələ səfəriniz yoxdur. İlk səfəri yerləşdirin.',
 book:'Müraciət göndər',noSeats:'Boş yer yoxdur',pending:'Müraciət göndərildi. Sürücünün cavabını gözləyin.',chatDrv:'Sürücü ilə çatı aç',declinedP:'Sürücü müraciəti rədd etdi.',unbook:'Müraciəti ləğv et',
 pas:'Sərnişin',acc:'Qəbul et',dec:'Rədd et',openChat:'Çatı aç',declined:'Rədd edildi.',noReq:'Hələ müraciət yoxdur.',
 seatsN:'boş yer',driver:'sürücü',carL:'Maşın',plateL:'nömrə',cancelTrip:'Səfəri ləğv et',
@@ -208,7 +213,7 @@ who:'Кто вы?',tDrv:'Я водитель',tPas:'Я пассажир',fDrv:'�
 from:'Откуда',to:'Куда',date:'Дата',time:'Время',dname:'Имя водителя',dnamePh:'Как вас зовут',car:'Марка машины',carPh:'Например, Toyota Camry',plate:'Номер машины',seats:'Свободных мест',price:'Цена за место, ₼',
 report:'Пожаловаться',msg:'Сообщение',send:'Отправить',admT:'Панель администратора',admClear:'Удалить все поездки и чаты',admBtn:'Вход для администратора',sos:'Пожаловаться админу',
 foot:'Попутчик — совместные поездки между городами Азербайджана. Тестовая версия.',q:'Есть вопросы?',
-ok:'OK',yes:'Да',no:'Нет',emptyPas:'Поездок по этому маршруту пока нет. Выберите другой маршрут.',emptyDrv:'У вас пока нет поездок. Опубликуйте первую.',
+ok:'OK',yes:'Да',no:'Нет',emptyPas:'Поездок по этому маршруту пока нет.',waneed:'Оставьте заявку — напишем в WhatsApp, как только найдётся водитель.',wabtn:'Оставить заявку в WhatsApp',wamsg:'Здравствуйте! Ищу попутчика: ',wadate:'Дата: ',emptyDrv:'У вас пока нет поездок. Опубликуйте первую.',
 book:'Отправить заявку',noSeats:'Мест нет',pending:'Заявка отправлена. Ждём ответ водителя.',chatDrv:'Открыть чат с водителем',declinedP:'Водитель отклонил заявку.',unbook:'Отменить заявку',
 pas:'Пассажир',acc:'Принять',dec:'Отклонить',openChat:'Открыть чат',declined:'Отклонена.',noReq:'Заявок пока нет.',
 seatsN:'мест',driver:'водитель',carL:'Машина',plateL:'номер',cancelTrip:'Отменить поездку',
@@ -293,7 +298,11 @@ function render(){
   var f=$('from').value,t=$('to').value,now=Date.now(),list;
   if(role==='pas')list=S.trips.filter(function(x){return x.from_city===f&&x.to_city===t&&new Date(x.depart_at).getTime()>now-36e5});
   else list=S.trips.filter(function(x){return x.driver_id===me});
-  if(!list.length){$('list').innerHTML='<div class="card empty">'+T(role==='pas'?'emptyPas':'emptyDrv')+'</div>';return}
+  if(!list.length){
+    if(role==='pas'){var msg=T('wamsg')+city(f)+' → '+city(t)+'. '+T('wadate')+'____';
+      $('list').innerHTML='<div class="card empty"><b>'+T('emptyPas')+'</b><br>'+T('waneed')+'<br><a class="btn p wa" target="_blank" rel="noopener" href="https://wa.me/994558482041?text='+encodeURIComponent(msg)+'">'+T('wabtn')+'</a></div>'}
+    else $('list').innerHTML='<div class="card empty">'+T('emptyDrv')+'</div>';
+    return}
   $('list').innerHTML=list.map(function(x){
     var own=x.driver_id===me,b=myBk(x.id),act='';
     if(role==='pas'){
