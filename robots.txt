@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://poputchik-az.netlify.app/sitemap.xml
+Sitemap: https://romanochavo87-web.github.io/poputchik/sitemap.xml

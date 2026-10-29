@@ -83,7 +83,7 @@ footer a{color:var(--acc);font-weight:600}
   <h2 data-i="qrT"></h2>
   <p class="small" data-i="qrSub" style="margin:0"></p>
   <div class="qrbox" id="qrBox"></div>
-  <p class="small" style="text-align:center;margin:0 0 4px;font-weight:600">poputchik-az.netlify.app/usta</p>
+  <p class="small" style="text-align:center;margin:0 0 4px;font-weight:600">romanochavo87-web.github.io/poputchik/usta</p>
   <div class="row"><button class="btn" id="qrPrint" type="button" data-i="qrPrint"></button><button class="btn p" id="qrShare" type="button" data-i="qrShare"></button></div>
 </section>
 
@@ -226,10 +226,10 @@ $('adm').onclick=function(e){var d=e.target.dataset||{};
   if(d.rc)sb.from('master_reports').update({status:'closed'}).eq('id',d.rc).then(function(r){if(r.error)return fail(r.error);loadAdm()});
 };
 
-var SITE='https://poputchik-az.netlify.app/usta';
+var SITE='https://romanochavo87-web.github.io/poputchik/usta';
 (function(){var box=$('qrBox');
-  try{if(!window.qrcode)throw 0;var q=qrcode(0,'M');q.addData(SITE);q.make();box.innerHTML=q.createSvgTag(4,2);var sv=box.querySelector('svg');if(sv){sv.removeAttribute('width');sv.removeAttribute('height');sv.setAttribute('role','img');sv.setAttribute('aria-label','QR: poputchik-az.netlify.app/usta')}}
-  catch(e){box.innerHTML='<img alt="QR: poputchik-az.netlify.app/usta" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=10&data='+encodeURIComponent(SITE)+'">'}
+  try{if(!window.qrcode)throw 0;var q=qrcode(0,'M');q.addData(SITE);q.make();box.innerHTML=q.createSvgTag(4,2);var sv=box.querySelector('svg');if(sv){sv.removeAttribute('width');sv.removeAttribute('height');sv.setAttribute('role','img');sv.setAttribute('aria-label','QR: romanochavo87-web.github.io/poputchik/usta')}}
+  catch(e){box.innerHTML='<img alt="QR: romanochavo87-web.github.io/poputchik/usta" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=10&data='+encodeURIComponent(SITE)+'">'}
 })();
 $('qrPrint').onclick=function(){window.print()};
 $('qrShare').onclick=function(){

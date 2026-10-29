@@ -7,10 +7,10 @@
 <title>Yol yoldaşı · Попутчик — şəhərlərarası birgə səfərlər</title>
 <meta name="description" content="Başqa şəhərə maşınla gedirsiniz? Boş yerləri yol yoldaşlarına təklif edin və benzin xərcini bölüşün. Едете в другой город? Найдите попутчиков и разделите расходы на бензин.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://poputchik-az.netlify.app/og.png">
+<meta property="og:image" content="https://romanochavo87-web.github.io/poputchik/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://poputchik-az.netlify.app/">
+<meta property="og:url" content="https://romanochavo87-web.github.io/poputchik/">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="og:title" content="Yol yoldaşı — Azərbaycanda şəhərlərarası birgə səfərlər">
 <meta property="og:description" content="Sürücülər boş yerləri təklif edir, sərnişinlər yol yoldaşı tapır. Benzin xərcini bölüşün — avtobusdan rahat, taksidən ucuz.">
@@ -116,7 +116,7 @@ footer a{color:var(--acc);font-weight:600}
   <h2 data-i="qrT"></h2>
   <p class="small" data-i="qrSub" style="margin:0"></p>
   <div class="qrbox" id="qrBox"></div>
-  <p class="small" style="text-align:center;margin:0 0 4px;font-weight:600">poputchik-az.netlify.app</p>
+  <p class="small" style="text-align:center;margin:0 0 4px;font-weight:600">romanochavo87-web.github.io/poputchik</p>
   <div class="row"><button class="btn" id="qrPrint" type="button" data-i="qrPrint"></button><button class="btn p" id="qrShare" type="button" data-i="qrShare"></button></div>
 </section>
 <div class="card small" id="banner" role="status" style="display:none;border-color:#c0392b"></div>
@@ -431,10 +431,10 @@ function fuelHint(){
 }
 ['from','to','seats','price'].forEach(function(id){$(id).addEventListener('input',fuelHint);$(id).addEventListener('change',fuelHint)});
 
-var SITE='https://poputchik-az.netlify.app';
+var SITE='https://romanochavo87-web.github.io/poputchik';
 (function(){var box=$('qrBox');
-  try{if(!window.qrcode)throw 0;var q=qrcode(0,'M');q.addData(SITE);q.make();box.innerHTML=q.createSvgTag(4,2);var sv=box.querySelector('svg');if(sv){sv.removeAttribute('width');sv.removeAttribute('height');sv.setAttribute('role','img');sv.setAttribute('aria-label','QR: poputchik-az.netlify.app')}}
-  catch(e){box.innerHTML='<img alt="QR: poputchik-az.netlify.app" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=10&data='+encodeURIComponent(SITE)+'">'}
+  try{if(!window.qrcode)throw 0;var q=qrcode(0,'M');q.addData(SITE);q.make();box.innerHTML=q.createSvgTag(4,2);var sv=box.querySelector('svg');if(sv){sv.removeAttribute('width');sv.removeAttribute('height');sv.setAttribute('role','img');sv.setAttribute('aria-label','QR: romanochavo87-web.github.io/poputchik')}}
+  catch(e){box.innerHTML='<img alt="QR: romanochavo87-web.github.io/poputchik" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=10&data='+encodeURIComponent(SITE)+'">'}
 })();
 $('qrPrint').onclick=function(){window.print()};
 $('qrShare').onclick=function(){
